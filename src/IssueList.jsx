@@ -4,7 +4,7 @@ import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ProductFilter from './ProductFilter.jsx';
-import IssueTable from './IssueTable.jsx';
+import ProductTable from './ProductTable.jsx';
 import IssueDetail from './IssueDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
@@ -219,7 +219,7 @@ class IssueList extends React.Component {
             <ProductFilter urlBase="/issues" />
           </Panel.Body>
         </Panel>
-        <IssueTable
+        <ProductTable
           issues={issues}
           closeIssue={this.closeIssue}
           deleteIssue={this.deleteIssue}

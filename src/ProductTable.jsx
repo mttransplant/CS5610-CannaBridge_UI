@@ -10,41 +10,41 @@ import UserContext from './UserContext.js';
 class IssueRowPlain extends React.Component {
   render() {
     const {
-      issue,
+      product,
       location: { search },
-      closeIssue,
-      deleteIssue,
+      closeProduct,
+      deleteProduct,
       index,
     } = this.props;
     const user = this.context;
     const disabled = !user.signedIn;
 
-    const selectLocation = { pathname: `/issues/${issue.id}`, search };
-    const editTooltip = (<Tooltip id="edit-tooltip">Edit Issue</Tooltip>);
-    const closeTooltip = (<Tooltip id="close-tooltip">Close Issue</Tooltip>);
-    const deleteTooltip = (<Tooltip id="delete-tooltip">Delete Issue</Tooltip>);
+    const selectLocation = { pathname: `/products/${product.id}`, search };
+    const editTooltip = (<Tooltip id="edit-tooltip">Edit Product</Tooltip>);
+    const closeTooltip = (<Tooltip id="close-tooltip">Close Product</Tooltip>);
+    const deleteTooltip = (<Tooltip id="delete-tooltip">Delete Product</Tooltip>);
 
     function onDelete(e) {
       e.preventDefault();
-      deleteIssue(index);
+      deleteProduct(index);
     }
 
     function onClose(e) {
       e.preventDefault();
-      closeIssue(index);
+      closeProduct(index);
     }
 
     const tableRow = (
       <tr>
-        <td>{issue.id}</td>
-        <td>{issue.status}</td>
-        <td>{issue.owner}</td>
-        <td>{issue.created.toDateString()}</td>
-        <td>{issue.effort}</td>
-        <td>{issue.due ? issue.due.toDateString() : ''}</td>
-        <td>{issue.title}</td>
+        <td>{product.id}</td>
+        <td>{product.status}</td>
+        <td>{product.owner}</td>
+        <td>{product.created.toDateString()}</td>
+        <td>{product.effort}</td>
+        <td>{product.due ? product.due.toDateString() : ''}</td>
+        <td>{product.title}</td>
         <td>
-          <LinkContainer to={`/edit/${issue.id}`}>
+          <LinkContainer to={`/edit/product/${product.id}`}>
             <OverlayTrigger delayShow={1000} placement="top" overlay={editTooltip}>
               <Button bsSize="xsmall">
                 <Glyphicon glyph="edit" />
@@ -78,34 +78,37 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function IssueTable({ issues, closeIssue, deleteIssue }) {
-  const issueRows = issues.map((issue, index) => (
-    <IssueRow
-      key={issue.id}
-      issue={issue}
-      closeIssue={closeIssue}
-      deleteIssue={deleteIssue}
-      index={index}
-    />
-  ));
+export default function IssueTable({ products, closeProduct, deleteProduct }) {
+  // const productRows = products.map((product, index) => (
+  //   <IssueRow
+  //     key={product.id}
+  //     product={product}
+  //     closeProduct={closeProduct}
+  //     deleteProduct={deleteProduct}
+  //     index={index}
+  //   />
+  // ));
 
   return (
-    <Table bordered condensed hover responsive>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Status</th>
-          <th>Owner</th>
-          <th>Created</th>
-          <th>Effort</th>
-          <th>Due Date</th>
-          <th>Title</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {issueRows}
-      </tbody>
-    </Table>
+    // <Table bordered condensed hover responsive>
+    //   <thead>
+    //     <tr>
+    //       <th>ID</th>
+    //       <th>Status</th>
+    //       <th>Owner</th>
+    //       <th>Created</th>
+    //       <th>Effort</th>
+    //       <th>Due Date</th>
+    //       <th>Title</th>
+    //       <th>Action</th>
+    //     </tr>
+    //   </thead>
+    //   <tbody>
+    //     {productRows}
+    //   </tbody>
+    // </Table>
+    <div>
+      <h1>Placeholder for Products Table</h1>
+    </div>
   );
 }
