@@ -78,37 +78,38 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function IssueTable({ products, closeProduct, deleteProduct }) {
-  // const productRows = products.map((product, index) => (
-  //   <IssueRow
-  //     key={product.id}
-  //     product={product}
-  //     closeProduct={closeProduct}
-  //     deleteProduct={deleteProduct}
-  //     index={index}
-  //   />
-  // ));
+export default function ProductTable({ products, closeProduct, deleteProduct }) {
+  const productRows = products.map((product, index) => (
+    <IssueRow
+      key={product.id}
+      product={product}
+      closeProduct={closeProduct}
+      deleteProduct={deleteProduct}
+      index={index}
+    />
+  ));
 
   return (
-    // <Table bordered condensed hover responsive>
-    //   <thead>
-    //     <tr>
-    //       <th>ID</th>
-    //       <th>Status</th>
-    //       <th>Owner</th>
-    //       <th>Created</th>
-    //       <th>Effort</th>
-    //       <th>Due Date</th>
-    //       <th>Title</th>
-    //       <th>Action</th>
-    //     </tr>
-    //   </thead>
-    //   <tbody>
-    //     {productRows}
-    //   </tbody>
-    // </Table>
     <div>
       <h1>Placeholder for Products Table</h1>
+      <h2>Note: Still linking to Issues DB. That will be updated later.</h2>
+      <Table bordered condensed hover responsive>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Status</th>
+            <th>Owner</th>
+            <th>Created</th>
+            <th>Effort</th>
+            <th>Due Date</th>
+            <th>Title</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {productRows}
+        </tbody>
+      </Table>
     </div>
   );
 }

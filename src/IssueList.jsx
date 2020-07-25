@@ -220,7 +220,7 @@ class IssueList extends React.Component {
           </Panel.Body>
         </Panel>
         <ProductTable
-          issues={issues}
+          products={issues}
           closeIssue={this.closeIssue}
           deleteIssue={this.deleteIssue}
         />
