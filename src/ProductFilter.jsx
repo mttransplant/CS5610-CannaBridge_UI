@@ -13,13 +13,13 @@ class IssueFilter extends React.Component {
     const params = new URLSearchParams(search);
     this.state = {
       status: params.get('status') || '',
-      effortMin: params.get('effortMin') || '',
-      effortMax: params.get('effortMax') || '',
+      dateMin: params.get('dateMin') || '', // changed effortMin to dateMin
+      dateMax: params.get('dateMax') || '', // changed effortMax to dateMax
       changed: false,
     };
     this.onChangeStatus = this.onChangeStatus.bind(this);
-    this.onChangeEffortMin = this.onChangeEffortMin.bind(this);
-    this.onChangeEffortMax = this.onChangeEffortMax.bind(this);
+    this.onChangeDateMin = this.onChangeDateMin.bind(this);
+    this.onChangeDateMax = this.onChangeDateMax.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
     this.showOriginalFilter = this.showOriginalFilter.bind(this);
   }
@@ -36,17 +36,17 @@ class IssueFilter extends React.Component {
     this.setState({ status: e.target.value, changed: true });
   }
 
-  onChangeEffortMin(e) {
-    const effortString = e.target.value;
-    if (effortString.match(/^\d*$/)) {
-      this.setState({ effortMin: e.target.value, changed: true });
+  onChangeDateMin(e) {
+    const dateString = e.target.value;
+    if (dateString.match(/^\d*$/)) {
+      this.setState({ dateMin: e.target.value, changed: true });
     }
   }
 
-  onChangeEffortMax(e) {
-    const effortString = e.target.value;
-    if (effortString.match(/^\d*$/)) {
-      this.setState({ effortMax: e.target.value, changed: true });
+  onChangeDateMax(e) {
+    const dateString = e.target.value;
+    if (dateString.match(/^\d*$/)) {
+      this.setState({ dateMax: e.target.value, changed: true });
     }
   }
 
@@ -55,26 +55,26 @@ class IssueFilter extends React.Component {
     const params = new URLSearchParams(search);
     this.setState({
       status: params.get('status') || '',
-      effortMin: params.get('effortMin') || '',
-      effortMax: params.get('effortMax') || '',
+      dateMin: params.get('dateMin') || '',
+      dateMax: params.get('dateMax') || '',
       changed: false,
     });
   }
 
   applyFilter() {
-    const { status, effortMin, effortMax } = this.state;
+    const { status, dateMin, dateMax } = this.state;
     const { history, urlBase } = this.props;
     const params = new URLSearchParams();
     if (status) params.set('status', status);
-    if (effortMin) params.set('effortMin', effortMin);
-    if (effortMax) params.set('effortMax', effortMax);
+    if (dateMin) params.set('dateMin', dateMin);
+    if (dateMax) params.set('dateMax', dateMax);
     const search = params.toString() ? `?${params.toString()}` : '';
     history.push({ pathname: urlBase, search });
   }
 
   render() {
     const { status, changed } = this.state;
-    const { effortMin, effortMax } = this.state;
+    const { dateMin, dateMax } = this.state;
     return (
       <Row>
         <Col xs={6} sm={4} md={3} lg={2}>
@@ -95,11 +95,11 @@ class IssueFilter extends React.Component {
         </Col>
         <Col xs={6} sm={4} md={3} lg={2}>
           <FormGroup>
-            <ControlLabel>Effort between:</ControlLabel>
+            <ControlLabel>Posted date between:</ControlLabel>
             <InputGroup>
-              <FormControl value={effortMin} onChange={this.onChangeEffortMin} />
+              <FormControl value={dateMin} onChange={this.onChangeDateMin} />
               <InputGroup.Addon>-</InputGroup.Addon>
-              <FormControl value={effortMax} onChange={this.onChangeEffortMax} />
+              <FormControl value={dateMax} onChange={this.onChangeDateMax} />
             </InputGroup>
           </FormGroup>
         </Col>

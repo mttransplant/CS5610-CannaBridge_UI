@@ -3,7 +3,7 @@ import React from 'react';
 import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import IssueFilter from './IssueFilter.jsx';
+import ProductFilter from './ProductFilter.jsx';
 import IssueTable from './IssueTable.jsx';
 import IssueDetail from './IssueDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
@@ -33,10 +33,10 @@ class IssueList extends React.Component {
     const vars = { hasSelection: false, selectedId: 0 };
     if (params.get('status')) vars.status = params.get('status');
 
-    const effortMin = parseInt(params.get('effortMin'), 10);
-    if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
-    const effortMax = parseInt(params.get('effortMax'), 10);
-    if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
+    const dateMin = parseInt(params.get('dateMin'), 10);
+    if (!Number.isNaN(dateMin)) vars.dateMin = dateMin;
+    const dateMax = parseInt(params.get('dateMax'), 10);
+    if (!Number.isNaN(dateMax)) vars.dateMax = dateMax;
 
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
@@ -51,16 +51,16 @@ class IssueList extends React.Component {
 
     const query = `query issueList (
       $status: StatusType
-      $effortMin: Int
-      $effortMax: Int
+      $dateMin: Int
+      $dateMax: Int
       $hasSelection: Boolean!
       $selectedId: Int!
       $page: Int
     ) {
         issueList (
           status: $status
-         effortMin: $effortMin
-         effortMax: $effortMax
+         effortMin: $dateMin
+         effortMax: $dateMax
          page: $page
         ) {
             issues {
@@ -72,7 +72,7 @@ class IssueList extends React.Component {
         issue(id: $selectedId) @include (if: $hasSelection) {
           id description
         }
-      }`;
+      }`;// TODO: update variables effortMin and effortMax
 
     const data = await graphQLFetch(query, vars, showError);
     return data;
@@ -216,7 +216,7 @@ class IssueList extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <IssueFilter urlBase="/issues" />
+            <ProductFilter urlBase="/issues" />
           </Panel.Body>
         </Panel>
         <IssueTable
