@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default function IssueDetail({ issue }) {
-  if (issue) {
+export default function ProductDetail({ product }) {
+  if (product) {
     return (
       <div>
         <h3>Description</h3>
-        <pre>{issue.description}</pre>
+        <pre>{product.description}</pre>
       </div>
     );
   }

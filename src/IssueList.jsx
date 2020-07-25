@@ -5,7 +5,7 @@ import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ProductFilter from './ProductFilter.jsx';
 import ProductTable from './ProductTable.jsx';
-import IssueDetail from './IssueDetail.jsx';
+import ProductDetail from './ProductDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import store from './store.js';
@@ -224,7 +224,7 @@ class IssueList extends React.Component {
           closeIssue={this.closeIssue}
           deleteIssue={this.deleteIssue}
         />
-        <IssueDetail issue={selectedIssue} />
+        <ProductDetail product={selectedIssue} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>
