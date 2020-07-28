@@ -27,7 +27,7 @@ function PageLink({
   );
 }
 
-class IssueList extends React.Component {
+class ProductList extends React.Component {
   static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
     const vars = { hasSelection: false, selectedId: 0 };
@@ -48,7 +48,7 @@ class IssueList extends React.Component {
     let page = parseInt(params.get('page'), 10);
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
-
+    // TODO: Update Query for #Iter2
     const query = `query issueList (
       $status: StatusType
       $dateMin: Int
@@ -72,31 +72,34 @@ class IssueList extends React.Component {
         issue(id: $selectedId) @include (if: $hasSelection) {
           id description
         }
-      }`;// TODO: update variables effortMin and effortMax
+      }`;
 
-    const data = await graphQLFetch(query, vars, showError);
+
+    let data = await graphQLFetch(query, vars, showError);
+    // TODO: Link up to new MongoDB for Products. Hold for #Iter2
+    data = { productList: { products: [], pages: 0 } };
     return data;
   }
 
   constructor() {
     super();
-    const initialData = store.initialData || { issueList: {} };
+    const initialData = store.initialData || { productList: {} };
     const {
-      issueList: { issues, pages }, issue: selectedIssue,
+      productList: { products, pages }, product: selectedProduct,
     } = initialData;
     delete store.initialData;
     this.state = {
-      issues,
-      selectedIssue,
+      products,
+      selectedProduct,
       pages,
     };
-    this.closeIssue = this.closeIssue.bind(this);
-    this.deleteIssue = this.deleteIssue.bind(this);
+    this.closeProduct = this.closeProduct.bind(this);
+    this.deleteProduct = this.deleteProduct.bind(this);
   }
 
   componentDidMount() {
-    const { issues } = this.state;
-    if (issues == null) this.loadData();
+    const { products } = this.state;
+    if (products == null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -112,63 +115,66 @@ class IssueList extends React.Component {
 
   async loadData() {
     const { location: { search }, match, showError } = this.props;
-    const data = await IssueList.fetchData(match, search, showError);
+    const data = await ProductList.fetchData(match, search, showError);
     if (data) {
       this.setState({
-        issues: data.issueList.issues,
-        selectedIssue: data.issue,
-        pages: data.issueList.pages,
+        products: data.productList.products,
+        selectedProduct: data.product,
+        pages: data.productList.pages,
       });
     }
   }
 
-  async closeIssue(index) {
+  async closeProduct(index) {
+    // TODO: Update query
     const query = `mutation issueClose($id: Int!) {
       issueUpdate(id: $id, changes: {status: Closed}) {
         id title status owner
         effort created due description
       }
     }`;
-    const { issues } = this.state;
+    const { products } = this.state;
     const { showError } = this.props;
-    const data = await graphQLFetch(query, { id: issues[index].id }, showError);
+    const data = await graphQLFetch(query, { id: products[index].id }, showError);
     if (data) {
       this.setState((prevState) => {
-        const newList = [...prevState.issues];
+        const newList = [...prevState.products];
+        // TODO: update to productUpdate when GraphQL is updated in #Iter2
         newList[index] = data.issueUpdate;
-        return { issues: newList };
+        return { products: newList };
       });
     } else {
       this.loadData();
     }
   }
 
-  async deleteIssue(index) {
+  async deleteProduct(index) {
     const query = `mutation issueDelete($id: Int!) {
       issueDelete(id: $id)
     }`;
-    const { issues } = this.state;
+    const { products } = this.state;
     const { location: { pathname, search }, history } = this.props;
-    const { id } = issues[index];
+    const { id } = products[index];
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
+    // TODO: Update to productDelete when GraphQL is updated in #Iter2
     if (data && data.issueDelete) {
       this.setState((prevState) => {
-        const newList = [...prevState.issues];
-        if (pathname === `/issues/${id}`) {
-          history.push({ pathname: '/issues', search });
+        const newList = [...prevState.products];
+        if (pathname === `/products/${id}`) {
+          history.push({ pathname: '/products', search });
         }
         newList.splice(index, 1);
         const undoMessage = (
           <span>
-            {`Deleted issue ${id} successfully.`}
+            {`Deleted product ${id} successfully.`}
             <Button bsStyle="link" onClick={() => this.restoreIssue(id)}>
               UNDO
             </Button>
           </span>
         );
         showSuccess(undoMessage);
-        return { issues: newList };
+        return { products: newList };
       });
     } else {
       this.loadData();
@@ -181,14 +187,14 @@ class IssueList extends React.Component {
     }`;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
-    if (data) { showSuccess(`Issue ${id} restored successfully.`); }
+    if (data) { showSuccess(`Product ${id} restored successfully.`); }
     this.loadData();
   }
 
   render() {
-    const { issues } = this.state;
-    if (issues == null) return null;
-    const { selectedIssue, pages } = this.state;
+    const { products } = this.state;
+    if (products == null) return null;
+    const { selectedProduct, pages } = this.state;
     const { location: { search } } = this.props;
 
     const params = new URLSearchParams(search);
@@ -216,15 +222,15 @@ class IssueList extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <ProductFilter urlBase="/issues" />
+            <ProductFilter urlBase="/products" />
           </Panel.Body>
         </Panel>
         <ProductTable
-          products={issues}
-          closeIssue={this.closeIssue}
-          deleteIssue={this.deleteIssue}
+          products={products}
+          closeProduct={this.closeProduct}
+          deleteProduct={this.deleteProduct}
         />
-        <ProductDetail product={selectedIssue} />
+        <ProductDetail product={selectedProduct} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>
@@ -239,6 +245,6 @@ class IssueList extends React.Component {
   }
 }
 
-const IssueListWithToast = withToast(IssueList);
-IssueListWithToast.fetchData = IssueList.fetchData;
-export default IssueListWithToast;
+const ProductListWithToast = withToast(ProductList);
+ProductListWithToast.fetchData = ProductList.fetchData;
+export default ProductListWithToast;

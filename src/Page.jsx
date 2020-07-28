@@ -25,8 +25,8 @@ function NavBar({ user, onUserChange }) {
         <LinkContainer exact to="/">
           <NavItem>Home</NavItem>
         </LinkContainer>
-        <LinkContainer to="/issues">
-          <NavItem>Issue List</NavItem>
+        <LinkContainer to="/products">
+          <NavItem>Product List</NavItem>
         </LinkContainer>
         <LinkContainer to="/report">
           <NavItem>Report</NavItem>

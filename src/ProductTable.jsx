@@ -92,7 +92,6 @@ export default function ProductTable({ products, closeProduct, deleteProduct }) 
   return (
     <div>
       <h1>Placeholder for Products Table</h1>
-      <h2>Note: Still linking to Issues DB. That will be updated later.</h2>
       <Table bordered condensed hover responsive>
         <thead>
           <tr>
