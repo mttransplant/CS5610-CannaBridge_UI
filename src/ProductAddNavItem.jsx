@@ -7,7 +7,7 @@ import {
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 
-class IssueAddNavItem extends React.Component {
+class ProductAddNavItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,12 +29,15 @@ class IssueAddNavItem extends React.Component {
   async handleSubmit(e) {
     e.preventDefault();
     this.hideModal();
-    const form = document.forms.issueAdd;
+    const form = document.forms.productAdd;
     const issue = {
-      owner: form.owner.value,
+      // TODO: update owner to quantity when new MongoDB is ready for #Iter2
+      owner: form.quantity.value,
       title: form.title.value,
+      // TODO: Update due to something else useful when new MongoDB is ready
       due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
     };
+    // TODO: Update query for new MongoDB in #Iter2
     const query = `mutation issueAdd($issue: IssueInputs!) {
         issueAdd(issue: $issue) {
             id
@@ -42,10 +45,12 @@ class IssueAddNavItem extends React.Component {
     }`;
 
     const { showError } = this.props;
+    // TODO: Update issue to product in #Iter2
     const data = await graphQLFetch(query, { issue }, showError);
     if (data) {
       const { history } = this.props;
-      history.push(`/edit/${data.issueAdd.id}`);
+      // TODO: Update issueAdd to productAdd in #Iter2
+      history.push(`/edit/product/${data.issueAdd.id}`);
     }
   }
 
@@ -57,30 +62,26 @@ class IssueAddNavItem extends React.Component {
       <React.Fragment>
         <NavItem disabled={!signedIn} onClick={this.showModal}>
           <OverlayTrigger
-            /* I noticed that the placement of "left" on a mobile device
-            rendered it outside the window. It does require a page refresh
-            when the browser is switched between views. */
-            // placement={window.innerWidth >= 768 ? 'left' : 'right'}
             placement="left"
             delayShow={1000}
-            overlay={<Tooltip id="create-issue">Create Issue</Tooltip>}
+            overlay={<Tooltip id="create-product">Create Product</Tooltip>}
           >
             <Glyphicon glyph="plus" />
           </OverlayTrigger>
         </NavItem>
         <Modal keyboard show={showing} onHide={this.hideModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Create Issue</Modal.Title>
+            <Modal.Title>Create Product</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form name="issueAdd">
+            <Form name="productAdd">
               <FormGroup>
                 <ControlLabel>Title</ControlLabel>
                 <FormControl name="title" autoFocus />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Owner</ControlLabel>
-                <FormControl name="owner" />
+                <ControlLabel>Quantity</ControlLabel>
+                <FormControl name="quantity" />
               </FormGroup>
             </Form>
           </Modal.Body>
@@ -104,4 +105,4 @@ class IssueAddNavItem extends React.Component {
   }
 }
 
-export default withToast(withRouter(IssueAddNavItem));
+export default withToast(withRouter(ProductAddNavItem));

@@ -9,7 +9,7 @@ import UserContext from './UserContext.js';
 import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
 import Contents from './Contents.jsx';
-import IssueAddNavItem from './IssueAddNavItem.jsx';
+import ProductAddNavItem from './ProductAddNavItem.jsx';
 import SignInNavItem from './SignInNavItem.jsx';
 
 function NavBar({ user, onUserChange }) {
@@ -17,7 +17,7 @@ function NavBar({ user, onUserChange }) {
     <Navbar>
       <Navbar.Header>
         {/* Navbar.Brand gives specific sytyling */}
-        <Navbar.Brand>Issue Tracker</Navbar.Brand>
+        <Navbar.Brand>CannaBridge</Navbar.Brand>
       </Navbar.Header>
       <Nav>
         {/* LinkContainer provides the same functionality as NavLink,
@@ -38,7 +38,7 @@ function NavBar({ user, onUserChange }) {
         </Navbar.Form>
       </Col>
       <Nav pullRight>
-        <IssueAddNavItem user={user} />
+        <ProductAddNavItem user={user} />
         <SignInNavItem user={user} onUserChange={onUserChange} />
         <NavDropdown
           id="user-dropdown"
