@@ -111,7 +111,7 @@ export default class Page extends React.Component {
     return (
       <div>
         <NavBar user={user} onUserChange={this.onUserChange} />
-        {/* Personal Reminder: The following is what gives the margins
+        {/* Personal Reminder: <Grid fluid> is what gives the margins
       around the elements in Contents */}
         <Grid fluid>
           <UserContext.Provider value={user}>

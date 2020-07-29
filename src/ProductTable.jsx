@@ -17,6 +17,7 @@ class IssueRowPlain extends React.Component {
       index,
     } = this.props;
     const user = this.context;
+    // TODO: After authentication is updated, only make edit/delete visible to owner.
     const disabled = !user.signedIn;
 
     const selectLocation = { pathname: `/products/${product.id}`, search };
@@ -92,6 +93,8 @@ export default function ProductTable({ products, closeProduct, deleteProduct }) 
   return (
     <div>
       <h1>Placeholder for Products Table</h1>
+      <h3>This table will only show a producer&apos;s own products.</h3>
+      <h3>Only dispensaries will see the full list of products.</h3>
       <Table bordered condensed hover responsive>
         <thead>
           <tr>

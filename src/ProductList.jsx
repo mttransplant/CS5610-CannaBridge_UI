@@ -49,6 +49,7 @@ class ProductList extends React.Component {
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
     // TODO: Update Query for #Iter2
+    // TODO: Modify query for #Iter2: if(producer) show only myProducts, else show all products
     const query = `query issueList (
       $status: StatusType
       $dateMin: Int
@@ -77,6 +78,7 @@ class ProductList extends React.Component {
 
     let data = await graphQLFetch(query, vars, showError);
     // TODO: Link up to new MongoDB for Products. Hold for #Iter2
+    // Note: Next line is just so that old issueTracker data stops appearing
     data = { productList: { products: [], pages: 0 } };
     return data;
   }
