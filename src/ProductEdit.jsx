@@ -13,8 +13,9 @@ import withToast from './withToast.jsx';
 import store from './store.js';
 import UserContext from './UserContext.js';
 
-class IssueEdit extends React.Component {
+class ProductEdit extends React.Component {
   static async fetchData(match, search, showError) {
+    // TODO: Update query with new MongoDB in #Iter2
     const query = `query issue($id: Int!) {
       issue(id: $id) {
         id title status owner
@@ -24,15 +25,30 @@ class IssueEdit extends React.Component {
 
     const { params: { id } } = match;
     const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
-    return result;
+    // TODO: Remove the following once the new MongoDB is ready in #Iter2
+    const { issue } = result;
+    const newRes = {
+      product: {
+        created: issue.created,
+        description: issue.description,
+        due: issue.due,
+        effort: issue.effort,
+        id: issue.id,
+        owner: issue.owner,
+        status: issue.status,
+        title: issue.title,
+      },
+    };
+    // return result;
+    return newRes;
   }
 
   constructor() {
     super();
-    const issue = store.initialData ? store.initialData.issue : null;
+    const product = store.initialData ? store.initialData.product : null;
     delete store.initialData;
     this.state = {
-      issue,
+      product,
       invalidFields: {},
       showingValidation: false,
     };
@@ -44,8 +60,8 @@ class IssueEdit extends React.Component {
   }
 
   componentDidMount() {
-    const { issue } = this.state;
-    if (issue == null) this.loadData();
+    const { product } = this.state;
+    if (product == null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -60,7 +76,7 @@ class IssueEdit extends React.Component {
     const { name, value: textValue } = event.target;
     const value = naturalValue === undefined ? textValue : naturalValue;
     this.setState(prevState => ({
-      issue: { ...prevState.issue, [name]: value },
+      product: { ...prevState.product, [name]: value },
     }));
   }
 
@@ -76,7 +92,7 @@ class IssueEdit extends React.Component {
   async handleSubmit(e) {
     e.preventDefault();
     this.showValidation();
-    const { issue, invalidFields } = this.state;
+    const { product, invalidFields } = this.state;
     if (Object.keys(invalidFields).length !== 0) return;
     const query = `mutation issueUpdate(
       $id: Int!
@@ -90,19 +106,20 @@ class IssueEdit extends React.Component {
         effort created due description
       }
     }`;
-    const { id, created, ...changes } = issue;
+    const { id, created, ...changes } = product;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { changes, id }, showError);
     if (data) {
-      this.setState({ issue: data.issueUpdate });
+      // TODO: UPdate data.issueUpdate to data.productUpdate in #Iter2
+      this.setState({ product: data.issueUpdate });
       showSuccess('Updated issue successfully');
     }
   }
 
   async loadData() {
     const { match, showError } = this.props;
-    const data = await IssueEdit.fetchData(match, null, showError);
-    this.setState({ issue: data ? data.issue : {}, invalidFields: {} });
+    const data = await ProductEdit.fetchData(match, null, showError);
+    this.setState({ product: data ? data.product : {}, invalidFields: {} });
   }
 
   showValidation() {
@@ -114,13 +131,13 @@ class IssueEdit extends React.Component {
   }
 
   render() {
-    const { issue } = this.state;
-    if (issue == null) return null;
-    const { issue: { id } } = this.state;
+    const { product } = this.state;
+    if (product == null) return null;
+    const { product: { id } } = this.state;
     const { match: { params: { id: propsId } } } = this.props;
     if (id == null) {
       if (propsId != null) {
-        return <h3>{`Issue with ID ${propsId} not found.`}</h3>;
+        return <h3>{`Product with ID ${propsId} not found.`}</h3>;
       }
       return null;
     }
@@ -135,18 +152,31 @@ class IssueEdit extends React.Component {
       );
     }
 
-    const { issue: { title, status } } = this.state;
-    const { issue: { owner, effort, description } } = this.state;
-    const { issue: { created, due } } = this.state;
+    const { product: { title, status } } = this.state;
+    const { product: { owner, effort, description } } = this.state;
+    const { product: { created, due } } = this.state;
     const user = this.context;
 
     return (
       <Panel>
         <Panel.Heading>
-          <Panel.Title>{`Editing issue: ${id}`}</Panel.Title>
+          <Panel.Title>{`Editing product: ${id}`}</Panel.Title>
         </Panel.Heading>
         <Panel.Body>
           <Form horizontal onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Title</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={TextInput}
+                  size={50}
+                  name="title"
+                  value={title}
+                  onChange={this.onChange}
+                  key={id}
+                />
+              </Col>
+            </FormGroup>
             <FormGroup>
               <Col componentClass={ControlLabel} sm={3}>Created</Col>
               <Col sm={9}>
@@ -172,7 +202,7 @@ class IssueEdit extends React.Component {
               </Col>
             </FormGroup>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Owner</Col>
+              <Col componentClass={ControlLabel} sm={3}>Quantity</Col>
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
@@ -184,7 +214,7 @@ class IssueEdit extends React.Component {
               </Col>
             </FormGroup>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Effort</Col>
+              <Col componentClass={ControlLabel} sm={3}>Unit</Col>
               <Col sm={9}>
                 <FormControl
                   componentClass={NumInput}
@@ -199,7 +229,7 @@ class IssueEdit extends React.Component {
               invalidFields.due ? 'error' : null
             }
             >
-              <Col componentClass={ControlLabel} sm={3}>Due</Col>
+              <Col componentClass={ControlLabel} sm={3}>Price</Col>
               <Col sm={9}>
                 <FormControl
                   componentClass={DateInput}
@@ -213,18 +243,15 @@ class IssueEdit extends React.Component {
               </Col>
             </FormGroup>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Title</Col>
+              <Col componentClass={ControlLabel} sm={3}>Image</Col>
               <Col sm={9}>
-                <FormControl
-                  componentClass={TextInput}
-                  size={50}
-                  name="title"
-                  value={title}
-                  onChange={this.onChange}
-                  key={id}
+                <input
+                  type="file"
+                  className="image-upload"
                 />
               </Col>
             </FormGroup>
+
             <FormGroup>
               <Col componentClass={ControlLabel} sm={3}>Description</Col>
               <Col sm={9}>
@@ -271,7 +298,7 @@ class IssueEdit extends React.Component {
   }
 }
 
-IssueEdit.contextType = UserContext;
-const IssueEditWithToast = withToast(IssueEdit);
-IssueEditWithToast.fetchData = IssueEdit.fetchData;
+ProductEdit.contextType = UserContext;
+const IssueEditWithToast = withToast(ProductEdit);
+IssueEditWithToast.fetchData = ProductEdit.fetchData;
 export default IssueEditWithToast;
