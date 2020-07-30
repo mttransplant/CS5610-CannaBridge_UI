@@ -5,7 +5,7 @@ import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ProductFilter from './ProductFilter.jsx';
 import ProductTable from './ProductTable.jsx';
-import ProductDetail from './ProductDetail.jsx';
+import ItemDetail from './ItemDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import store from './store.js';
@@ -232,7 +232,7 @@ class ProductList extends React.Component {
           closeProduct={this.closeProduct}
           deleteProduct={this.deleteProduct}
         />
-        <ProductDetail product={selectedProduct} />
+        <ItemDetail item={selectedProduct} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>
