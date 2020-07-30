@@ -7,7 +7,7 @@ import {
 import UserContext from './UserContext.js';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class IssueRowPlain extends React.Component {
+class ProductRowPlain extends React.Component {
   render() {
     const {
       product,
@@ -75,13 +75,13 @@ class IssueRowPlain extends React.Component {
   }
 }
 
-IssueRowPlain.contextType = UserContext;
-const IssueRow = withRouter(IssueRowPlain);
-delete IssueRow.contextType;
+ProductRowPlain.contextType = UserContext;
+const ProductRow = withRouter(ProductRowPlain);
+delete ProductRow.contextType;
 
 export default function ProductTable({ products, closeProduct, deleteProduct }) {
   const productRows = products.map((product, index) => (
-    <IssueRow
+    <ProductRow
       key={product.id}
       product={product}
       closeProduct={closeProduct}
