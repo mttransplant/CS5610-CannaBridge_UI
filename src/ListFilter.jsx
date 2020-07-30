@@ -7,7 +7,7 @@ import {
   Button, ButtonToolbar, FormGroup, FormControl, ControlLabel, InputGroup, Row, Col,
 } from 'react-bootstrap';
 
-class IssueFilter extends React.Component {
+class ListFilter extends React.Component {
   constructor({ location: { search } }) {
     super();
     const params = new URLSearchParams(search);
@@ -121,4 +121,4 @@ class IssueFilter extends React.Component {
   }
 }
 
-export default withRouter(IssueFilter);
+export default withRouter(ListFilter);

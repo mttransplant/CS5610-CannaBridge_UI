@@ -3,7 +3,7 @@ import React from 'react';
 import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import ProductFilter from './ProductFilter.jsx';
+import ListFilter from './ListFilter.jsx';
 import ProductTable from './ProductTable.jsx';
 import ItemDetail from './ItemDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
@@ -224,7 +224,7 @@ class ProductList extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <ProductFilter urlBase="/products" />
+            <ListFilter urlBase="/products" />
           </Panel.Body>
         </Panel>
         <ProductTable

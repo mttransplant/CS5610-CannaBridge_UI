@@ -1,7 +1,7 @@
 import React from 'react';
 import { Panel, Table } from 'react-bootstrap';
 
-import ProductFilter from './ProductFilter.jsx';
+import ListFilter from './ListFilter.jsx';
 import withToast from './withToast.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
@@ -89,7 +89,7 @@ class IssueReport extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <ProductFilter urlBase="/report" />
+            <ListFilter urlBase="/report" />
           </Panel.Body>
         </Panel>
         <Table bordered condensed hover responsive>
