@@ -37,6 +37,11 @@ class RequestRowPlain extends React.Component {
 
     const tableRow = (
       <tr>
+        {/* Columns for Products Table
+        Title
+        Type
+        Date Posted
+        Posted By */}
         <td>{request.id}</td>
         <td>{request.status}</td>
         <td>{request.owner}</td>
@@ -98,14 +103,18 @@ export default function RequestTable({ requests, closeRequest, deleteRequest }) 
       <Table bordered condensed hover responsive>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Date Posted</th>
+            <th>Posted By</th>
+            {/* <th>ID</th>
             <th>Status</th>
             <th>Owner</th>
             <th>Created</th>
             <th>Effort</th>
             <th>Due Date</th>
             <th>Title</th>
-            <th>Action</th>
+            <th>Action</th> */}
           </tr>
         </thead>
         <tbody>

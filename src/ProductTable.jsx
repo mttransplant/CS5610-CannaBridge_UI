@@ -37,6 +37,15 @@ class ProductRowPlain extends React.Component {
 
     const tableRow = (
       <tr>
+        {/* Columns for Products Table
+        Image Thumbnail
+        Title
+        Type
+        Date Posted
+        Posted By
+        Quantity
+        Unit
+        Price */}
         <td>{product.id}</td>
         <td>{product.status}</td>
         <td>{product.owner}</td>
@@ -98,14 +107,22 @@ export default function ProductTable({ products, closeProduct, deleteProduct }) 
       <Table bordered condensed hover responsive>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Date Posted</th>
+            <th>Posted By</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Price</th>
+            {/* <th>ID</th>
             <th>Status</th>
             <th>Owner</th>
             <th>Created</th>
             <th>Effort</th>
             <th>Due Date</th>
             <th>Title</th>
-            <th>Action</th>
+            <th>Action</th> */}
           </tr>
         </thead>
         <tbody>
