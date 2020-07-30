@@ -4,7 +4,9 @@ import graphQLFetch from './graphQLFetch.js';
 
 export default class About extends React.Component {
   static async fetchData() {
-    const data = await graphQLFetch('query {about}');
+    let data = await graphQLFetch('query {about}');
+    // TODO: Remove when new MongoDB is available for #Iter2
+    data = { about: 'CannaBridge API v0.9' };
     return data;
   }
 
@@ -27,7 +29,7 @@ export default class About extends React.Component {
     const { apiAbout } = this.state;
     return (
       <div className="text-center">
-        <h3>Issue Tracker version 0.9</h3>
+        <h3>CannaBridge UI v0.9</h3>
         <h4>{apiAbout}</h4>
       </div>
     );

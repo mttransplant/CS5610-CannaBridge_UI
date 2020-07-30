@@ -51,6 +51,9 @@ function NavBar({ user, onUserChange }) {
           <LinkContainer to="/about">
             <MenuItem>About</MenuItem>
           </LinkContainer>
+          <LinkContainer to="/contact">
+            <MenuItem>Contact Us</MenuItem>
+          </LinkContainer>
         </NavDropdown>
       </Nav>
     </Navbar>
