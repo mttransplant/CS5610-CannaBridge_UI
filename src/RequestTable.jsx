@@ -92,7 +92,7 @@ export default function RequestTable({ requests, closeRequest, deleteRequest }) 
 
   return (
     <div>
-      <h1>Placeholder for Products Table</h1>
+      <h1>Placeholder for Requests Table</h1>
       <h3>This table will only show a dispensary&apos;s own requests.</h3>
       <h3>Only cultivators will see the full list of requests.</h3>
       <Table bordered condensed hover responsive>

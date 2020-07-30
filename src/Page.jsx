@@ -28,9 +28,12 @@ function NavBar({ user, onUserChange }) {
         <LinkContainer to="/products">
           <NavItem>Product List</NavItem>
         </LinkContainer>
-        <LinkContainer to="/report">
-          <NavItem>Report</NavItem>
+        <LinkContainer to="/requests">
+          <NavItem>Request List</NavItem>
         </LinkContainer>
+        {/* <LinkContainer to="/report">
+          <NavItem>Report</NavItem>
+        </LinkContainer> */}
       </Nav>
       <Col sm={5}>
         <Navbar.Form>
