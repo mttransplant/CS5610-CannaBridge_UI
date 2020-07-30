@@ -63,7 +63,7 @@ class ItemAddNav extends React.Component {
     // const { user: { accountType } } = this.props;
     let toolTipId;
     let formTitle;
-    if (!signedIn) { // TODO: Replace signedIn with accountType when available
+    if (signedIn) { // TODO: Replace signedIn with accountType when available
       toolTipId = 'create-product';
       formTitle = 'Create Product';
     } else {
