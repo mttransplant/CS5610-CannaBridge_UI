@@ -7,7 +7,7 @@ import {
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 
-class ProductAddNavItem extends React.Component {
+class ItemAddNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ class ProductAddNavItem extends React.Component {
   async handleSubmit(e) {
     e.preventDefault();
     this.hideModal();
-    const form = document.forms.productAdd;
+    const form = document.forms.itemAdd;
     const issue = {
       // TODO: update owner to quantity when new MongoDB is ready for #Iter2
       owner: form.quantity.value,
@@ -38,6 +38,7 @@ class ProductAddNavItem extends React.Component {
       due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
     };
     // TODO: Update query for new MongoDB in #Iter2
+    // TODO: Use different queries (product vs request) depending on userType
     const query = `mutation issueAdd($issue: IssueInputs!) {
         issueAdd(issue: $issue) {
             id
@@ -58,23 +59,34 @@ class ProductAddNavItem extends React.Component {
   render() {
     const { showing } = this.state;
     const { user: { signedIn } } = this.props;
+    // TODO: Uncomment next line when ready in #Iter2
+    // const { user: { accountType } } = this.props;
+    let toolTipId;
+    let formTitle;
+    if (!signedIn) { // TODO: Replace signedIn with accountType when available
+      toolTipId = 'create-product';
+      formTitle = 'Create Product';
+    } else {
+      toolTipId = 'create-request';
+      formTitle = 'Create Request';
+    }
     return (
       <React.Fragment>
         <NavItem disabled={!signedIn} onClick={this.showModal}>
           <OverlayTrigger
             placement="left"
             delayShow={1000}
-            overlay={<Tooltip id="create-product">Create Product</Tooltip>}
+            overlay={<Tooltip id={toolTipId}>{formTitle}</Tooltip>}
           >
             <Glyphicon glyph="plus" />
           </OverlayTrigger>
         </NavItem>
         <Modal keyboard show={showing} onHide={this.hideModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Create Product</Modal.Title>
+            <Modal.Title>{formTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form name="productAdd">
+            <Form name="itemAdd">
               <FormGroup>
                 <ControlLabel>Title</ControlLabel>
                 <FormControl name="title" autoFocus />
@@ -105,4 +117,4 @@ class ProductAddNavItem extends React.Component {
   }
 }
 
-export default withToast(withRouter(ProductAddNavItem));
+export default withToast(withRouter(ItemAddNav));

@@ -9,7 +9,7 @@ import UserContext from './UserContext.js';
 import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
 import Contents from './Contents.jsx';
-import ProductAddNavItem from './ProductAddNavItem.jsx';
+import ItemAddNav from './ItemAddNav.jsx';
 import SignInNavItem from './SignInNavItem.jsx';
 
 function NavBar({ user, onUserChange }) {
@@ -38,7 +38,7 @@ function NavBar({ user, onUserChange }) {
         </Navbar.Form>
       </Col>
       <Nav pullRight>
-        <ProductAddNavItem user={user} />
+        <ItemAddNav user={user} />
         <SignInNavItem user={user} onUserChange={onUserChange} />
         <NavDropdown
           id="user-dropdown"
