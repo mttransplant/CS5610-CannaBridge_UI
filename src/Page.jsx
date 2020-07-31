@@ -54,6 +54,9 @@ function NavBar({ user, onUserChange }) {
           <LinkContainer to="/contact">
             <MenuItem>Contact Us</MenuItem>
           </LinkContainer>
+          <LinkContainer to="/accountrequest">
+            <MenuItem>Request an Account</MenuItem>
+          </LinkContainer>
         </NavDropdown>
       </Nav>
     </Navbar>

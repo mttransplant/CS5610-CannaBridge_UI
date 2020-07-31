@@ -205,9 +205,9 @@ class ProductEdit extends React.Component {
               <Col componentClass={ControlLabel} sm={3}>Quantity</Col>
               <Col sm={9}>
                 <FormControl
-                  componentClass={TextInput}
-                  name="owner"
-                  value={owner}
+                  componentClass={NumInput}
+                  name="effort"
+                  value={effort}
                   onChange={this.onChange}
                   key={id}
                 />
@@ -217,9 +217,9 @@ class ProductEdit extends React.Component {
               <Col componentClass={ControlLabel} sm={3}>Unit</Col>
               <Col sm={9}>
                 <FormControl
-                  componentClass={NumInput}
-                  name="effort"
-                  value={effort}
+                  componentClass={TextInput}
+                  name="owner"
+                  value={owner}
                   onChange={this.onChange}
                   key={id}
                 />
