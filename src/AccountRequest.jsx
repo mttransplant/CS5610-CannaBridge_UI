@@ -53,7 +53,6 @@ class AccountRequest extends React.Component {
   }
 
   async handleSubmit(e) {
-    console.log('value of e: ', e);
     e.preventDefault();
     this.showValidation();
     const { newAccount, invalidFields } = this.state;
