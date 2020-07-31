@@ -72,7 +72,7 @@ class ItemAddNav extends React.Component {
     }
     return (
       <React.Fragment>
-        <NavItem disabled={!signedIn} onClick={this.showModal}>
+        <NavItem disabled={pathname !== '/products' && pathname !== '/requests'} onClick={this.showModal}>
           <OverlayTrigger
             placement="left"
             delayShow={1000}
