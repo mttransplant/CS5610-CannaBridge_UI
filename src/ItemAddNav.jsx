@@ -57,7 +57,7 @@ class ItemAddNav extends React.Component {
 
   render() {
     const { showing } = this.state;
-    const { user: { signedIn } } = this.props;
+    // const { user: { signedIn } } = this.props;
     // TODO: Uncomment next line when ready in #Iter2
     // const { user: { accountType } } = this.props;
     let toolTipId;
