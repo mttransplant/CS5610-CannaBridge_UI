@@ -55,7 +55,6 @@ class ItemAddNav extends React.Component {
     }
   }
 
-
   render() {
     const { showing } = this.state;
     const { user: { signedIn } } = this.props;
@@ -63,7 +62,8 @@ class ItemAddNav extends React.Component {
     // const { user: { accountType } } = this.props;
     let toolTipId;
     let formTitle;
-    if (signedIn) { // TODO: Replace signedIn with accountType when available
+    const { location: { pathname } } = this.props;
+    if (pathname === '/products') { // TODO: Replace signedIn with accountType when available
       toolTipId = 'create-product';
       formTitle = 'Create Product';
     } else {
