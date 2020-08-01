@@ -1,7 +1,10 @@
 import React from 'react';
 import {
   NavItem, Modal, Button, NavDropdown, MenuItem,
+  Col, Form, FormGroup, FormControl, ControlLabel,
+  ButtonToolbar,
 } from 'react-bootstrap';
+import TextInput from './TextInput.jsx';
 import withToast from './withToast.jsx';
 
 class SigninNavItem extends React.Component {
@@ -9,7 +12,7 @@ class SigninNavItem extends React.Component {
     super(props);
     this.state = {
       showing: false,
-      disabled: true,
+      disabled: false,
     };
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
@@ -111,15 +114,41 @@ class SigninNavItem extends React.Component {
             <Modal.Title>Sign in</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Button
-              block
-              disabled={disabled}
-              bsStyle="primary"
-              onClick={this.signIn}
-            >
-              Sign In – Not Implemented
-              {/* <img src="https:/goo.gl/4yjp6B" alt="Sign In" /> */}
-            </Button>
+            <Form horizontal onSubmit={this.signIn}>
+              <FormGroup>
+                <Col sm={12}>
+                  <ControlLabel>Username</ControlLabel>
+                  <FormControl
+                    componentClass={TextInput}
+                    size={20}
+                    name="username"
+                    placeholder="username"
+                  />
+                </Col>
+              </FormGroup>
+              <FormGroup>
+                <Col sm={12}>
+                  <ControlLabel>Password</ControlLabel>
+                  <FormControl
+                    componentClass={TextInput}
+                    size={20}
+                    name="password"
+                    placeholder="password"
+                  />
+                </Col>
+              </FormGroup>
+              <ButtonToolbar>
+                <Button
+                  block
+                  disabled={disabled}
+                  bsStyle="primary"
+                >
+                  Sign In (Not Implemented)
+                  {/* <img src="https:/goo.gl/4yjp6B" alt="Sign In" /> */}
+                </Button>
+              </ButtonToolbar>
+            </Form>
+
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle="link" onClick={this.hideModal}>
