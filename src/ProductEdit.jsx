@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
-import DateInput from './DateInput.jsx';
+// import DateInput from './DateInput.jsx';
 import TextInput from './TextInput.jsx';
 import withToast from './withToast.jsx';
 import store from './store.js';
@@ -16,31 +16,16 @@ import UserContext from './UserContext.js';
 class ProductEdit extends React.Component {
   static async fetchData(match, search, showError) {
     // TODO: Update query with new MongoDB in #Iter2
-    const query = `query issue($id: Int!) {
-      issue(id: $id) {
-        id title status owner
-        effort created due description
+    const query = `query product($id: Int!) {
+      product(id: $id) {
+        id title type poster
+        created quantity unit price
       }
     }`;
 
     const { params: { id } } = match;
     const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
-    // TODO: Remove the following once the new MongoDB is ready in #Iter2
-    const { issue } = result;
-    const newRes = {
-      product: {
-        created: issue.created,
-        description: issue.description,
-        due: issue.due,
-        effort: issue.effort,
-        id: issue.id,
-        owner: issue.owner,
-        status: issue.status,
-        title: issue.title,
-      },
-    };
-    // return result;
-    return newRes;
+    return result;
   }
 
   constructor() {
@@ -94,16 +79,16 @@ class ProductEdit extends React.Component {
     this.showValidation();
     const { product, invalidFields } = this.state;
     if (Object.keys(invalidFields).length !== 0) return;
-    const query = `mutation issueUpdate(
+    const query = `mutation productUpdate(
       $id: Int!
-      $changes: IssueUpdateInputs!
+      $changes: ProductUpdateInputs!
     ) {
-      issueUpdate(
+      productUpdate(
         id: $id
         changes: $changes
       ){
-        id title status owner
-        effort created due description
+        id title type poster
+        created quantity unit price
       }
     }`;
     const { id, created, ...changes } = product;
@@ -111,8 +96,8 @@ class ProductEdit extends React.Component {
     const data = await graphQLFetch(query, { changes, id }, showError);
     if (data) {
       // TODO: UPdate data.issueUpdate to data.productUpdate in #Iter2
-      this.setState({ product: data.issueUpdate });
-      showSuccess('Updated issue successfully');
+      this.setState({ product: data.productUpdate });
+      showSuccess('Updated product successfully');
     }
   }
 
@@ -152,9 +137,12 @@ class ProductEdit extends React.Component {
       );
     }
 
-    const { product: { title, status } } = this.state;
-    const { product: { owner, effort, description } } = this.state;
-    const { product: { created, due } } = this.state;
+    const {
+      product: {
+        title, status, type, poster, quantity, unit, price, description, created,
+      },
+    } = this.state;
+
     const user = this.context;
 
     return (
@@ -186,6 +174,14 @@ class ProductEdit extends React.Component {
               </Col>
             </FormGroup>
             <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Poster</Col>
+              <Col sm={9}>
+                <FormControl.Static>
+                  {poster}
+                </FormControl.Static>
+              </Col>
+            </FormGroup>
+            <FormGroup>
               <Col componentClass={ControlLabel} sm={3}>Status</Col>
               <Col sm={9}>
                 <FormControl
@@ -194,10 +190,26 @@ class ProductEdit extends React.Component {
                   value={status}
                   onChange={this.onChange}
                 >
-                  <option value="New">New</option>
-                  <option value="Assigned">Assigned</option>
-                  <option value="Fixed">Fixed</option>
-                  <option value="Closed">Closed</option>
+                  <option value="Listed">Listed</option>
+                  <option value="Unlisted">Unlisted</option>
+                </FormControl>
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Type</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass="select"
+                  name="type"
+                  value={type}
+                  onChange={this.onChange}
+                >
+                  <option value="Flower">Flower</option>
+                  <option value="Edible">Edible</option>
+                  <option value="Topical">Topical</option>
+                  <option value="PreRoll">PreRoll</option>
+                  <option value="Concentrate">Concentrate</option>
+                  <option value="Beverage">Beverage</option>
                 </FormControl>
               </Col>
             </FormGroup>
@@ -206,8 +218,8 @@ class ProductEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={NumInput}
-                  name="effort"
-                  value={effort}
+                  name="quantity"
+                  value={quantity}
                   onChange={this.onChange}
                   key={id}
                 />
@@ -218,28 +230,23 @@ class ProductEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  name="owner"
-                  value={owner}
+                  name="unit"
+                  value={unit}
                   onChange={this.onChange}
                   key={id}
                 />
               </Col>
             </FormGroup>
-            <FormGroup validationState={
-              invalidFields.due ? 'error' : null
-            }
-            >
+            <FormGroup>
               <Col componentClass={ControlLabel} sm={3}>Price</Col>
               <Col sm={9}>
                 <FormControl
-                  componentClass={DateInput}
-                  onValidityChange={this.onValidityChange}
-                  name="due"
-                  value={due}
+                  componentClass={NumInput}
+                  name="price"
+                  value={price}
                   onChange={this.onChange}
                   key={id}
                 />
-                <FormControl.Feedback />
               </Col>
             </FormGroup>
             <FormGroup>
@@ -271,7 +278,9 @@ class ProductEdit extends React.Component {
               <Col smOffset={3} sm={6}>
                 <ButtonToolbar>
                   <Button
-                    disabled={!user.signedIn}
+                  // TODO: set this back once authentication is implemented
+                    // disabled={!user.signedIn}
+                    disabled={user.signedIn}
                     bsStyle="primary"
                     type="submit"
                   >
@@ -289,9 +298,9 @@ class ProductEdit extends React.Component {
           </Form>
         </Panel.Body>
         <Panel.Footer>
-          <Link to={`/edit/${id - 1}`}>Prev</Link>
+          <Link to={`/edit/product/${id - 1}`}>Prev</Link>
           {' | '}
-          <Link to={`/edit/${id + 1}`}>Next</Link>
+          <Link to={`/edit/product/${id + 1}`}>Next</Link>
         </Panel.Footer>
       </Panel>
     );
