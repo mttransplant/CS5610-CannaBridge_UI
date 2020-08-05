@@ -37,22 +37,16 @@ class ProductRowPlain extends React.Component {
 
     const tableRow = (
       <tr>
-        {/* Columns for Products Table
-        Image Thumbnail
-        Title
-        Type
-        Date Posted
-        Posted By
-        Quantity
-        Unit
-        Price */}
+        {/* TODO: Add Image Thumbnail */}
+        <td><Glyphicon glyph="picture" /></td>
         <td>{product.id}</td>
-        <td>{product.status}</td>
-        <td>{product.owner}</td>
-        <td>{product.created.toDateString()}</td>
-        <td>{product.effort}</td>
-        <td>{product.due ? product.due.toDateString() : ''}</td>
         <td>{product.title}</td>
+        <td>{product.type}</td>
+        <td>{product.created.toDateString()}</td>
+        <td>{product.poster}</td>
+        <td>{product.quantity}</td>
+        <td>{product.unit}</td>
+        <td>{product.price}</td>
         <td>
           <LinkContainer to={`/edit/product/${product.id}`}>
             <OverlayTrigger delayShow={1000} placement="top" overlay={editTooltip}>
@@ -108,6 +102,7 @@ export default function ProductTable({ products, closeProduct, deleteProduct }) 
         <thead>
           <tr>
             <th>Image</th>
+            <th>ID</th>
             <th>Title</th>
             <th>Type</th>
             <th>Date Posted</th>
@@ -115,14 +110,7 @@ export default function ProductTable({ products, closeProduct, deleteProduct }) 
             <th>Quantity</th>
             <th>Unit</th>
             <th>Price</th>
-            {/* <th>ID</th>
-            <th>Status</th>
-            <th>Owner</th>
-            <th>Created</th>
-            <th>Effort</th>
-            <th>Due Date</th>
-            <th>Title</th>
-            <th>Action</th> */}
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>

@@ -31,7 +31,7 @@ class ProductList extends React.Component {
   static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
     const vars = { hasSelection: false, selectedId: 0 };
-    if (params.get('status')) vars.status = params.get('status');
+    if (params.get('type')) vars.type = params.get('type');
 
     const dateMin = parseInt(params.get('dateMin'), 10);
     if (!Number.isNaN(dateMin)) vars.dateMin = dateMin;
@@ -50,36 +50,36 @@ class ProductList extends React.Component {
     vars.page = page;
     // TODO: Update Query for #Iter2
     // TODO: Modify query for #Iter2: if(producer) show only myProducts, else show all products
-    const query = `query issueList (
-      $status: StatusType
+    const query = `query productList (
+      $type: Type
       $dateMin: Int
       $dateMax: Int
       $hasSelection: Boolean!
       $selectedId: Int!
       $page: Int
     ) {
-        issueList (
-          status: $status
-         effortMin: $dateMin
-         effortMax: $dateMax
+         productList (
+         type: $type
+         dateMin: $dateMin
+         dateMax: $dateMax
          page: $page
         ) {
-            issues {
-            id title status owner
-            created effort due
+            products {
+            id title type poster
+            created quantity unit price
             }
             pages
           }
-        issue(id: $selectedId) @include (if: $hasSelection) {
+        product(id: $selectedId) @include (if: $hasSelection) {
           id description
         }
       }`;
 
 
-    let data = await graphQLFetch(query, vars, showError);
+    const data = await graphQLFetch(query, vars, showError);
     // TODO: Link up to new MongoDB for Products. Hold for #Iter2
     // Note: Next line is just so that old issueTracker data stops appearing
-    data = { productList: { products: [], pages: 0 } };
+    // data = { productList: { products: [], pages: 0 } };
     return data;
   }
 
@@ -129,10 +129,10 @@ class ProductList extends React.Component {
 
   async closeProduct(index) {
     // TODO: Update query
-    const query = `mutation issueClose($id: Int!) {
-      issueUpdate(id: $id, changes: {status: Closed}) {
-        id title status owner
-        effort created due description
+    const query = `mutation productClose($id: Int!) {
+      productUpdate(id: $id, changes: {status: Unlisted}) {
+        id title type poster
+        created quantity unit price
       }
     }`;
     const { products } = this.state;
@@ -151,8 +151,8 @@ class ProductList extends React.Component {
   }
 
   async deleteProduct(index) {
-    const query = `mutation issueDelete($id: Int!) {
-      issueDelete(id: $id)
+    const query = `mutation productDelete($id: Int!) {
+      productDelete(id: $id)
     }`;
     const { products } = this.state;
     const { location: { pathname, search }, history } = this.props;
@@ -160,7 +160,7 @@ class ProductList extends React.Component {
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
     // TODO: Update to productDelete when GraphQL is updated in #Iter2
-    if (data && data.issueDelete) {
+    if (data && data.productDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.products];
         if (pathname === `/products/${id}`) {
@@ -170,7 +170,7 @@ class ProductList extends React.Component {
         const undoMessage = (
           <span>
             {`Deleted product ${id} successfully.`}
-            <Button bsStyle="link" onClick={() => this.restoreIssue(id)}>
+            <Button bsStyle="link" onClick={() => this.restoreProduct(id)}>
               UNDO
             </Button>
           </span>
@@ -183,9 +183,9 @@ class ProductList extends React.Component {
     }
   }
 
-  async restoreIssue(id) {
-    const query = `mutation issueRestore($id: Int!) {
-      issueRestore(id: $id)
+  async restoreProduct(id) {
+    const query = `mutation productRestore($id: Int!) {
+      productRestore(id: $id)
     }`;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
