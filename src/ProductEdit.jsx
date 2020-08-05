@@ -286,7 +286,7 @@ class ProductEdit extends React.Component {
                   >
                     Submit
                   </Button>
-                  <LinkContainer to="/issues">
+                  <LinkContainer to="/products">
                     <Button bsStyle="link">Back</Button>
                   </LinkContainer>
                 </ButtonToolbar>
