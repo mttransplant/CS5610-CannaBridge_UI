@@ -38,14 +38,14 @@ class ListFilter extends React.Component {
 
   onChangeDateMin(e) {
     const dateString = e.target.value;
-    if (dateString.match(/^\d*$/)) {
+    if (dateString.match(/^[\d-]*$/)) {
       this.setState({ dateMin: e.target.value, changed: true });
     }
   }
 
   onChangeDateMax(e) {
     const dateString = e.target.value;
-    if (dateString.match(/^\d*$/)) {
+    if (dateString.match(/^[\d-]*$/)) {
       this.setState({ dateMax: e.target.value, changed: true });
     }
   }
@@ -97,7 +97,7 @@ class ListFilter extends React.Component {
         </Col>
         <Col xs={6} sm={4} md={3} lg={2}>
           <FormGroup>
-            <ControlLabel>Posted date between:</ControlLabel>
+            <ControlLabel>Date Posted between:</ControlLabel>
             <InputGroup>
               <FormControl value={dateMin} onChange={this.onChangeDateMin} />
               <InputGroup.Addon>-</InputGroup.Addon>

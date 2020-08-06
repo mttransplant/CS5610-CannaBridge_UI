@@ -34,10 +34,15 @@ class RequestList extends React.Component {
     if (params.get('type')) vars.type = params.get('type');
 
     // TODO: Update these to look for strings
-    const dateMin = parseInt(params.get('dateMin'), 10);
-    if (!Number.isNaN(dateMin)) vars.dateMin = dateMin;
-    const dateMax = parseInt(params.get('dateMax'), 10);
-    if (!Number.isNaN(dateMax)) vars.dateMax = dateMax;
+    // const dateMin = parseInt(params.get('dateMin'), 10);
+    // if (!Number.isNaN(dateMin)) vars.dateMin = dateMin;
+    // const dateMax = parseInt(params.get('dateMax'), 10);
+    // if (!Number.isNaN(dateMax)) vars.dateMax = dateMax;
+
+    const dateMin = params.get('dateMin');
+    if (dateMin !== null) vars.dateMin = dateMin;
+    const dateMax = params.get('dateMax');
+    if (dateMax !== null) vars.dateMax = dateMax;
 
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
@@ -53,8 +58,8 @@ class RequestList extends React.Component {
     // TODO: Modify query for #Iter2: if(dispensary) show only myRequesets, else show all requests
     const query = `query requestList (
       $type: Type
-      $dateMin: Int
-      $dateMax: Int
+      $dateMin: GraphQLDate
+      $dateMax: GraphQLDate
       $hasSelection: Boolean!
       $selectedId: Int!
       $page: Int
