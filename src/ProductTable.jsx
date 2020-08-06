@@ -17,7 +17,7 @@ class ProductRowPlain extends React.Component {
       index,
     } = this.props;
     const user = this.context;
-    // TODO: After authentication is updated, only make edit/delete visible to owner.
+    // TODO: After authentication is updated, make edit/delete only visible to owner.
     let disabled = !user.signedIn;
     disabled = false;
 
@@ -96,9 +96,12 @@ export default function ProductTable({ products, closeProduct, deleteProduct }) 
 
   return (
     <div>
-      <h1>Placeholder for Products Table</h1>
-      <h3>This table will only show a producer&apos;s own products.</h3>
-      <h3>Only dispensaries will see the full list of products.</h3>
+      <h1>List of Products</h1>
+      <p>
+        Note: Only users authenticated with a dispensary account will be
+        able to see the full list of products.
+        Users authenticated as a producer will only see their own products.
+      </p>
       <Table bordered condensed hover responsive>
         <thead>
           <tr>
