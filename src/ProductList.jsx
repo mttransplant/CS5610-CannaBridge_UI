@@ -33,6 +33,7 @@ class ProductList extends React.Component {
     const vars = { hasSelection: false, selectedId: 0 };
     if (params.get('type')) vars.type = params.get('type');
 
+    // TODO: Update these to look for strings
     const dateMin = parseInt(params.get('dateMin'), 10);
     if (!Number.isNaN(dateMin)) vars.dateMin = dateMin;
     const dateMax = parseInt(params.get('dateMax'), 10);
