@@ -18,7 +18,8 @@ class ProductRowPlain extends React.Component {
     } = this.props;
     const user = this.context;
     // TODO: After authentication is updated, only make edit/delete visible to owner.
-    const disabled = !user.signedIn;
+    let disabled = !user.signedIn;
+    disabled = false;
 
     const selectLocation = { pathname: `/products/${product.id}`, search };
     const editTooltip = (<Tooltip id="edit-tooltip">Edit Product</Tooltip>);
