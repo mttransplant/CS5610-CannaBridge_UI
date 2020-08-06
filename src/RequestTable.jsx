@@ -18,9 +18,10 @@ class RequestRowPlain extends React.Component {
     } = this.props;
     const user = this.context;
     // TODO: After authentication is updated, only make edit/delete visible to owner.
-    const disabled = !user.signedIn;
+    let disabled = !user.signedIn;
+    disabled = false;
 
-    const selectLocation = { pathname: `/requeset/${request.id}`, search };
+    const selectLocation = { pathname: `/request/${request.id}`, search };
     const editTooltip = (<Tooltip id="edit-tooltip">Edit Request</Tooltip>);
     const closeTooltip = (<Tooltip id="close-tooltip">Close Request</Tooltip>);
     const deleteTooltip = (<Tooltip id="delete-tooltip">Delete Request</Tooltip>);
@@ -42,13 +43,11 @@ class RequestRowPlain extends React.Component {
         Type
         Date Posted
         Posted By */}
-        <td>{request.id}</td>
-        <td>{request.status}</td>
-        <td>{request.owner}</td>
-        <td>{request.created.toDateString()}</td>
-        <td>{request.effort}</td>
-        <td>{request.due ? request.due.toDateString() : ''}</td>
+        {/* <td>{request.id}</td> */}
         <td>{request.title}</td>
+        <td>{request.type}</td>
+        <td>{request.created.toDateString()}</td>
+        <td>{request.poster}</td>
         <td>
           <LinkContainer to={`/edit/request/${request.id}`}>
             <OverlayTrigger delayShow={1000} placement="top" overlay={editTooltip}>

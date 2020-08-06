@@ -31,8 +31,9 @@ class RequestList extends React.Component {
   static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
     const vars = { hasSelection: false, selectedId: 0 };
-    if (params.get('status')) vars.status = params.get('status');
+    if (params.get('type')) vars.type = params.get('type');
 
+    // TODO: Update these to look for strings
     const dateMin = parseInt(params.get('dateMin'), 10);
     if (!Number.isNaN(dateMin)) vars.dateMin = dateMin;
     const dateMax = parseInt(params.get('dateMax'), 10);
@@ -50,36 +51,36 @@ class RequestList extends React.Component {
     vars.page = page;
     // TODO: Update Query for #Iter2
     // TODO: Modify query for #Iter2: if(dispensary) show only myRequesets, else show all requests
-    const query = `query issueList (
-      $status: StatusType
+    const query = `query requestList (
+      $type: Type
       $dateMin: Int
       $dateMax: Int
       $hasSelection: Boolean!
       $selectedId: Int!
       $page: Int
     ) {
-        issueList (
-          status: $status
-         effortMin: $dateMin
-         effortMax: $dateMax
+         requestList (
+         type: $type
+         dateMin: $dateMin
+         dateMax: $dateMax
          page: $page
         ) {
-            issues {
-            id title status owner
-            created effort due
+            requests {
+            id title type poster
+            created status description
             }
             pages
           }
-        issue(id: $selectedId) @include (if: $hasSelection) {
+        request(id: $selectedId) @include (if: $hasSelection) {
           id description
         }
       }`;
 
 
-    let data = await graphQLFetch(query, vars, showError);
+    const data = await graphQLFetch(query, vars, showError);
     // TODO: Link up to new MongoDB for Products. Hold for #Iter2
     // Note: Next line is just so that old issueTracker data stops appearing
-    data = { requestList: { requests: [], pages: 0 } };
+    // data = { requestList: { requests: [], pages: 0 } };
     return data;
   }
 
@@ -129,10 +130,10 @@ class RequestList extends React.Component {
 
   async closeRequest(index) {
     // TODO: Update query
-    const query = `mutation issueClose($id: Int!) {
-      issueUpdate(id: $id, changes: {status: Closed}) {
-        id title status owner
-        effort created due description
+    const query = `mutation requestClose($id: Int!) {
+      requestUpdate(id: $id, changes: {status: Unlisted}) {
+        id title status poster
+        created description type
       }
     }`;
     const { requests } = this.state;
@@ -142,7 +143,7 @@ class RequestList extends React.Component {
       this.setState((prevState) => {
         const newList = [...prevState.requests];
         // TODO: update to requestUpdate when GraphQL is updated in #Iter2
-        newList[index] = data.issueUpdate;
+        newList[index] = data.requestUpdate;
         return { requests: newList };
       });
     } else {
@@ -152,8 +153,8 @@ class RequestList extends React.Component {
 
   async deleteRequest(index) {
     // TODO: Update query
-    const query = `mutation issueDelete($id: Int!) {
-      issueDelete(id: $id)
+    const query = `mutation requestDelete($id: Int!) {
+      requestDelete(id: $id)
     }`;
     const { requests } = this.state;
     const { location: { pathname, search }, history } = this.props;
@@ -161,7 +162,7 @@ class RequestList extends React.Component {
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
     // TODO: Update to requestDelete when GraphQL is updated in #Iter2
-    if (data && data.issueDelete) {
+    if (data && data.requestDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.requests];
         if (pathname === `/requests/${id}`) {
@@ -186,8 +187,8 @@ class RequestList extends React.Component {
 
   async restoreRequest(id) {
     // TODO: Update query in #Iter2
-    const query = `mutation issueRestore($id: Int!) {
-      issueRestore(id: $id)
+    const query = `mutation requestRestore($id: Int!) {
+      requestRestore(id: $id)
     }`;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
