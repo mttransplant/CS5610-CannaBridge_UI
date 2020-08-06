@@ -5,7 +5,7 @@ import {
   ControlLabel, FormControl, Glyphicon, Tooltip, OverlayTrigger,
 } from 'react-bootstrap';
 import graphQLFetch from './graphQLFetch.js';
-import NumInput from './NumInput.jsx';
+// import NumInput from './NumInput.jsx';
 import withToast from './withToast.jsx';
 
 class ItemAddNav extends React.Component {
@@ -20,7 +20,6 @@ class ItemAddNav extends React.Component {
     this.hideModal = this.hideModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
 
   onChange(event, naturalValue) {
     const { name, value: textValue } = event.target;
@@ -60,6 +59,10 @@ class ItemAddNav extends React.Component {
       }`;
     } else if (pathname === '/requests') {
       item.title = form.title.value;
+      // TODO: Update form to get type
+      item.type = 'Flower';
+      // TODO: update this to pull in current user
+      item.poster = 'Producer A';
       query = `mutation requestAdd($item: RequestInputs!) {
         requestAdd(request: $item) {
             id
@@ -73,8 +76,13 @@ class ItemAddNav extends React.Component {
     const data = await graphQLFetch(query, { item }, showError);
     if (data) {
       const { history } = this.props;
+      if (pathname === '/products') {
       // TODO: Update issueAdd to productAdd in #Iter2
-      history.push(`/edit/product/${data.productAdd.id}`);
+        history.push(`/edit/product/${data.productAdd.id}`);
+      } else {
+        // TODO: Update issueAdd to productAdd in #Iter2
+        history.push(`/edit/request/${data.requestAdd.id}`);
+      }
     }
   }
 
@@ -115,14 +123,14 @@ class ItemAddNav extends React.Component {
                 <ControlLabel>Title</ControlLabel>
                 <FormControl name="title" autoFocus />
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <ControlLabel>Quantity</ControlLabel>
                 <FormControl
                   componentClass={NumInput}
                   name="quantity"
                   onChange={this.onChange}
                 />
-              </FormGroup>
+              </FormGroup> */}
             </Form>
           </Modal.Body>
           <Modal.Footer>
