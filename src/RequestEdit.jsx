@@ -6,8 +6,8 @@ import {
   ButtonToolbar, Button, Alert,
 } from 'react-bootstrap';
 import graphQLFetch from './graphQLFetch.js';
-import NumInput from './NumInput.jsx';
-import DateInput from './DateInput.jsx';
+// import NumInput from './NumInput.jsx';
+// import DateInput from './DateInput.jsx';
 import TextInput from './TextInput.jsx';
 import withToast from './withToast.jsx';
 import store from './store.js';
@@ -16,31 +16,16 @@ import UserContext from './UserContext.js';
 class RequestEdit extends React.Component {
   static async fetchData(match, search, showError) {
     // TODO: Update query with new MongoDB in #Iter2
-    const query = `query issue($id: Int!) {
-      issue(id: $id) {
-        id title status owner
-        effort created due description
+    const query = `query request($id: Int!) {
+      request(id: $id) {
+        id title type poster
+        created status description
       }
     }`;
 
     const { params: { id } } = match;
     const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
-    // TODO: Remove the following once the new MongoDB is ready in #Iter2
-    const { issue } = result;
-    const newRes = {
-      request: {
-        created: issue.created,
-        description: issue.description,
-        due: issue.due,
-        effort: issue.effort,
-        id: issue.id,
-        owner: issue.owner,
-        status: issue.status,
-        title: issue.title,
-      },
-    };
-    // return result;
-    return newRes;
+    return result;
   }
 
   constructor() {
@@ -76,7 +61,7 @@ class RequestEdit extends React.Component {
     const { name, value: textValue } = event.target;
     const value = naturalValue === undefined ? textValue : naturalValue;
     this.setState(prevState => ({
-      product: { ...prevState.product, [name]: value },
+      request: { ...prevState.request, [name]: value },
     }));
   }
 
@@ -95,16 +80,16 @@ class RequestEdit extends React.Component {
     const { request, invalidFields } = this.state;
     if (Object.keys(invalidFields).length !== 0) return;
     // TODO: Update query in #Iter2
-    const query = `mutation issueUpdate(
+    const query = `mutation requestUpdate(
       $id: Int!
-      $changes: IssueUpdateInputs!
+      $changes: RequestUpdateInputs!
     ) {
-      issueUpdate(
+      requestUpdate(
         id: $id
         changes: $changes
       ){
-        id title status owner
-        effort created due description
+        id title type poster
+        created status description
       }
     }`;
     const { id, created, ...changes } = request;
@@ -112,7 +97,7 @@ class RequestEdit extends React.Component {
     const data = await graphQLFetch(query, { changes, id }, showError);
     if (data) {
       // TODO: UPdate data.issueUpdate to data.requestUpdate in #Iter2
-      this.setState({ request: data.issueUpdate });
+      this.setState({ request: data.requestUpdate });
       showSuccess('Updated request successfully');
     }
   }
@@ -153,9 +138,12 @@ class RequestEdit extends React.Component {
       );
     }
 
-    const { request: { title, status } } = this.state;
-    const { request: { owner, effort, description } } = this.state;
-    const { request: { created, due } } = this.state;
+    const {
+      request: {
+        title, status, poster, type, created, description,
+      },
+    } = this.state;
+
     const user = this.context;
 
     return (
@@ -187,6 +175,14 @@ class RequestEdit extends React.Component {
               </Col>
             </FormGroup>
             <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Posted By</Col>
+              <Col sm={9}>
+                <FormControl.Static>
+                  {poster}
+                </FormControl.Static>
+              </Col>
+            </FormGroup>
+            <FormGroup>
               <Col componentClass={ControlLabel} sm={3}>Status</Col>
               <Col sm={9}>
                 <FormControl
@@ -195,52 +191,27 @@ class RequestEdit extends React.Component {
                   value={status}
                   onChange={this.onChange}
                 >
-                  <option value="New">New</option>
-                  <option value="Assigned">Assigned</option>
-                  <option value="Fixed">Fixed</option>
-                  <option value="Closed">Closed</option>
+                  <option value="Listed">Listed</option>
+                  <option value="Unlisted">Unlisted</option>
                 </FormControl>
               </Col>
             </FormGroup>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Quantity</Col>
+              <Col componentClass={ControlLabel} sm={3}>Type</Col>
               <Col sm={9}>
                 <FormControl
-                  componentClass={TextInput}
-                  name="owner"
-                  value={owner}
+                  componentClass="select"
+                  name="type"
+                  value={type}
                   onChange={this.onChange}
-                  key={id}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Unit</Col>
-              <Col sm={9}>
-                <FormControl
-                  componentClass={NumInput}
-                  name="effort"
-                  value={effort}
-                  onChange={this.onChange}
-                  key={id}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup validationState={
-              invalidFields.due ? 'error' : null
-            }
-            >
-              <Col componentClass={ControlLabel} sm={3}>Price</Col>
-              <Col sm={9}>
-                <FormControl
-                  componentClass={DateInput}
-                  onValidityChange={this.onValidityChange}
-                  name="due"
-                  value={due}
-                  onChange={this.onChange}
-                  key={id}
-                />
-                <FormControl.Feedback />
+                >
+                  <option value="Flower">Flower</option>
+                  <option value="Edible">Edible</option>
+                  <option value="Topical">Topical</option>
+                  <option value="PreRoll">PreRoll</option>
+                  <option value="Concentrate">Concentrate</option>
+                  <option value="Beverage">Beverage</option>
+                </FormControl>
               </Col>
             </FormGroup>
             <FormGroup>
@@ -262,13 +233,15 @@ class RequestEdit extends React.Component {
               <Col smOffset={3} sm={6}>
                 <ButtonToolbar>
                   <Button
-                    disabled={!user.signedIn}
+                  // TODO: set this back once authentication is implemented
+                    // disabled={!user.signedIn}
+                    disabled={user.signedIn}
                     bsStyle="primary"
                     type="submit"
                   >
                     Submit
                   </Button>
-                  <LinkContainer to="/issues">
+                  <LinkContainer to="/requests">
                     <Button bsStyle="link">Back</Button>
                   </LinkContainer>
                 </ButtonToolbar>
@@ -280,9 +253,9 @@ class RequestEdit extends React.Component {
           </Form>
         </Panel.Body>
         <Panel.Footer>
-          <Link to={`/edit/${id - 1}`}>Prev</Link>
+          <Link to={`/edit/request/${id - 1}`}>Prev</Link>
           {' | '}
-          <Link to={`/edit/${id + 1}`}>Next</Link>
+          <Link to={`/edit/request/${id + 1}`}>Next</Link>
         </Panel.Footer>
       </Panel>
     );
