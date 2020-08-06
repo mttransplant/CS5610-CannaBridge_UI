@@ -38,12 +38,6 @@ class RequestRowPlain extends React.Component {
 
     const tableRow = (
       <tr>
-        {/* Columns for Products Table
-        Title
-        Type
-        Date Posted
-        Posted By */}
-        {/* <td>{request.id}</td> */}
         <td>{request.id}</td>
         <td>{request.title}</td>
         <td>{request.type}</td>

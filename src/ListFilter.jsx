@@ -12,12 +12,12 @@ class ListFilter extends React.Component {
     super();
     const params = new URLSearchParams(search);
     this.state = {
-      status: params.get('status') || '',
-      dateMin: params.get('dateMin') || '', // changed effortMin to dateMin
-      dateMax: params.get('dateMax') || '', // changed effortMax to dateMax
+      type: params.get('type') || '',
+      dateMin: params.get('dateMin') || '',
+      dateMax: params.get('dateMax') || '',
       changed: false,
     };
-    this.onChangeStatus = this.onChangeStatus.bind(this);
+    this.onChangeType = this.onChangeType.bind(this);
     this.onChangeDateMin = this.onChangeDateMin.bind(this);
     this.onChangeDateMax = this.onChangeDateMax.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
@@ -32,8 +32,8 @@ class ListFilter extends React.Component {
     }
   }
 
-  onChangeStatus(e) {
-    this.setState({ status: e.target.value, changed: true });
+  onChangeType(e) {
+    this.setState({ type: e.target.value, changed: true });
   }
 
   onChangeDateMin(e) {
@@ -54,7 +54,7 @@ class ListFilter extends React.Component {
     const { location: { search } } = this.props;
     const params = new URLSearchParams(search);
     this.setState({
-      status: params.get('status') || '',
+      type: params.get('type') || '',
       dateMin: params.get('dateMin') || '',
       dateMax: params.get('dateMax') || '',
       changed: false,
@@ -62,10 +62,10 @@ class ListFilter extends React.Component {
   }
 
   applyFilter() {
-    const { status, dateMin, dateMax } = this.state;
+    const { type, dateMin, dateMax } = this.state;
     const { history, urlBase } = this.props;
     const params = new URLSearchParams();
-    if (status) params.set('status', status);
+    if (type) params.set('type', type);
     if (dateMin) params.set('dateMin', dateMin);
     if (dateMax) params.set('dateMax', dateMax);
     const search = params.toString() ? `?${params.toString()}` : '';
@@ -73,23 +73,25 @@ class ListFilter extends React.Component {
   }
 
   render() {
-    const { status, changed } = this.state;
+    const { type, changed } = this.state;
     const { dateMin, dateMax } = this.state;
     return (
       <Row>
         <Col xs={6} sm={4} md={3} lg={2}>
           <FormGroup>
-            <ControlLabel>Status:</ControlLabel>
+            <ControlLabel>Type:</ControlLabel>
             <FormControl
               componentClass="select"
-              value={status}
-              onChange={this.onChangeStatus}
+              value={type}
+              onChange={this.onChangeType}
             >
               <option value="">(All)</option>
-              <option value="New">New</option>
-              <option value="Assigned">Assigned</option>
-              <option value="Fixed">Fixed</option>
-              <option value="Closed">Closed</option>
+              <option value="Flower">Flower</option>
+              <option value="Edible">Edible</option>
+              <option value="Topical">Topical</option>
+              <option value="PreRoll">PreRoll</option>
+              <option value="Concentrate">Concentrate</option>
+              <option value="Beverage">Beverage</option>
             </FormControl>
           </FormGroup>
         </Col>
