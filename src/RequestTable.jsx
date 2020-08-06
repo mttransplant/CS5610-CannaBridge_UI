@@ -21,7 +21,7 @@ class RequestRowPlain extends React.Component {
     let disabled = !user.signedIn;
     disabled = false;
 
-    const selectLocation = { pathname: `/request/${request.id}`, search };
+    const selectLocation = { pathname: `/requests/${request.id}`, search };
     const editTooltip = (<Tooltip id="edit-tooltip">Edit Request</Tooltip>);
     const closeTooltip = (<Tooltip id="close-tooltip">Close Request</Tooltip>);
     const deleteTooltip = (<Tooltip id="delete-tooltip">Delete Request</Tooltip>);
