@@ -44,6 +44,7 @@ class RequestRowPlain extends React.Component {
         Date Posted
         Posted By */}
         {/* <td>{request.id}</td> */}
+        <td>{request.id}</td>
         <td>{request.title}</td>
         <td>{request.type}</td>
         <td>{request.created.toDateString()}</td>
@@ -96,24 +97,21 @@ export default function RequestTable({ requests, closeRequest, deleteRequest }) 
 
   return (
     <div>
-      <h1>Placeholder for Requests Table</h1>
-      <h3>This table will only show a dispensary&apos;s own requests.</h3>
-      <h3>Only cultivators will see the full list of requests.</h3>
+      <h1>List of Requests</h1>
+      <p>
+        Note: Only users authenticated with a producer account will be
+        able to see the full list of requests.
+        Users authenticated as a dispensary will only see their own requests.
+      </p>
       <Table bordered condensed hover responsive>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Title</th>
             <th>Type</th>
             <th>Date Posted</th>
             <th>Posted By</th>
-            {/* <th>ID</th>
-            <th>Status</th>
-            <th>Owner</th>
-            <th>Created</th>
-            <th>Effort</th>
-            <th>Due Date</th>
-            <th>Title</th>
-            <th>Action</th> */}
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
