@@ -110,7 +110,7 @@ export default class Page extends React.Component {
     }
   }
 
-  onUserChange({ user }) {
+  onUserChange(user) {
     console.log('Page.onuserChange: about to set user status');
     console.log(user);
     this.setState({ user });

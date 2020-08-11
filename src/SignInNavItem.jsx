@@ -69,8 +69,9 @@ class SigninNavItem extends React.Component {
       const result = JSON.parse(body);
       console.log('signin: result from json.parse(body)');
       console.log(result);
+      const { signedIn, username } = result;
       const { onUserChange } = this.props;
-      onUserChange({ user: result });
+      onUserChange({ signedIn, username });
       console.log('signin: completed onUserChange');
     } catch (error) {
       showError(`Error authenticating: ${error.error}`);
