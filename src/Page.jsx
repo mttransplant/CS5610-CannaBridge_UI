@@ -80,7 +80,9 @@ function Footer() {
 
 export default class Page extends React.Component {
   static async fetchData(cookie) {
-    const query = 'query { user { signedIn givenName}}';
+    console.log('Inside Page.fetchData, with cookie:');
+    console.log(cookie);
+    const query = 'query { user { id username}}';
     const data = await graphQLFetch(query, null, null, cookie);
     return data;
   }
@@ -94,24 +96,28 @@ export default class Page extends React.Component {
   }
 
   async componentDidMount() {
-    // const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
-    // const response = await fetch(`${apiEndpoint}/user`, {
-    //   method: 'POST',
-    //   credentials: 'include',
-    // });
-    // const body = await response.text();
-    // const result = JSON.parse(body);
-    // const { signedIn, givenName } = result;
-    // this.setState({ user: { signedIn, givenName } });
     const { user } = this.state;
+    console.log(`Page.didMount, user is: ${user}`);
     if (user == null) {
+      console.log('Page.didMount, inside if(user==null)');
       const data = await Page.fetchData();
-      this.setState({ user: data.user });
+      console.log(`Data returned to Page.didMount: ${data}`);
+      if (data) {
+        this.setState({ user: data.user });
+      } else {
+        this.setState({ user: { signedIn: false } });
+      }
     }
   }
 
-  onUserChange(user) {
+  onUserChange({ user }) {
+    console.log('Page.onuserChange: about to set user status');
+    console.log(user);
     this.setState({ user });
+    // eslint-disable-next-line react/destructuring-assignment
+    const currentUser = this.state.user;
+    console.log('Page.onUserChange: new user is:');
+    console.log(currentUser);
   }
 
   render() {

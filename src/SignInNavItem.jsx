@@ -18,6 +18,7 @@ class SigninNavItem extends React.Component {
     this.hideModal = this.hideModal.bind(this);
     this.signOut = this.signOut.bind(this);
     this.signIn = this.signIn.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,9 +34,26 @@ class SigninNavItem extends React.Component {
     // });
   }
 
-  async signIn() {
+  onChange(event, naturalValue) {
+    const { name, value: textValue } = event.target;
+    console.log(`New value for ${name}: ${textValue}`);
+    const value = naturalValue === undefined ? textValue : naturalValue;
+    this.setState(prevState => ({
+      authInfo: { ...prevState.authInfo, [name]: value },
+    }));
+    console.log('authInfo');
+    const { authInfo } = this.state;
+    console.log(authInfo);
+  }
+
+  async signIn(e) {
+    console.log('entered signIn()');
+    e.preventDefault();
     this.hideModal();
     const { showError } = this.props;
+    const { authInfo } = this.state;
+    console.log('current authInfo');
+    console.log(authInfo);
     // let googleToken;
     // try {
     //   const auth2 = window.gapi.auth2.getAuthInstance();
@@ -59,9 +77,28 @@ class SigninNavItem extends React.Component {
     //   const { onUserChange } = this.props;
     //   onUserChange({ signedIn, givenName });
     // } catch (error) {
-    const error = 'this is not implemented yet';
-    showError(`Error signing into the app: ${error}`);
     // }
+
+    try {
+      const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
+      console.log('About to send signin post request');
+      const response = await fetch(`${apiEndpoint}/signin`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: authInfo }),
+      });
+      console.log('received signin post request');
+      const body = await response.text();
+      const result = JSON.parse(body);
+      console.log('signin: result from json.parse(body)');
+      console.log(result);
+      const { onUserChange } = this.props;
+      onUserChange({ user: result });
+      console.log('signin: completed onUserChange');
+    } catch (error) {
+      showError(`Error authenticating: ${error.error}`);
+    }
   }
 
   async signOut() {
@@ -77,7 +114,7 @@ class SigninNavItem extends React.Component {
     //   const { onUserChange } = this.props;
     //   onUserChange({ signedIn: false, givenName: '' });
     // } catch (error) {
-    const error = 'this is not implemented yet';
+    const error = 'Signout is not implemented yet';
     showError(`Error signing out: ${error}`);
     // }
   }
@@ -100,7 +137,7 @@ class SigninNavItem extends React.Component {
     const { user } = this.props;
     if (user.signedIn) {
       return (
-        <NavDropdown title={user.givenName} id="user">
+        <NavDropdown title={user.username} id="user">
           <MenuItem onClick={this.signOut}>Sign out</MenuItem>
         </NavDropdown>
       );
@@ -122,7 +159,7 @@ class SigninNavItem extends React.Component {
                     componentClass={TextInput}
                     size={20}
                     name="username"
-                    placeholder="username"
+                    onChange={this.onChange}
                   />
                 </Col>
               </FormGroup>
@@ -133,20 +170,26 @@ class SigninNavItem extends React.Component {
                     componentClass={TextInput}
                     size={20}
                     name="password"
-                    placeholder="password"
+                    onChange={this.onChange}
                   />
                 </Col>
               </FormGroup>
-              <ButtonToolbar>
-                <Button
-                  block
-                  disabled={disabled}
-                  bsStyle="primary"
-                >
-                  Sign In (Not Implemented)
-                  {/* <img src="https:/goo.gl/4yjp6B" alt="Sign In" /> */}
-                </Button>
-              </ButtonToolbar>
+              <FormGroup>
+                <Col sm={12}>
+                  <ButtonToolbar>
+                    <Button
+                      block
+                      disabled={disabled}
+                      bsStyle="primary"
+                      type="submit"
+                    >
+                      Sign In
+                      {/* <img src="https:/goo.gl/4yjp6B" alt="Sign In" /> */}
+                    </Button>
+                  </ButtonToolbar>
+                </Col>
+              </FormGroup>
+
             </Form>
 
           </Modal.Body>
