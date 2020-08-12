@@ -21,58 +21,46 @@ class SigninNavItem extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount() {
-    // const clientId = window.ENV.GOOGLE_CLIENT_ID;
-    // if (!clientId) return;
-    // window.gapi.load('auth2', () => {
-    //   if (!window.gapi.auth2.getAuthInstance()) {
-    //     window.gapi.auth2.init({ client_id: clientId })
-    //       .then(() => {
-    //         this.setState({ disabled: false });
-    //       });
-    //   }
-    // });
-  }
+  // componentDidMount() {
+  //   const clientId = window.ENV.GOOGLE_CLIENT_ID;
+  //   if (!clientId) return;
+  //   window.gapi.load('auth2', () => {
+  //     if (!window.gapi.auth2.getAuthInstance()) {
+  //       window.gapi.auth2.init({ client_id: clientId })
+  //         .then(() => {
+  //           this.setState({ disabled: false });
+  //         });
+  //     }
+  //   });
+  // }
 
   onChange(event, naturalValue) {
     const { name, value: textValue } = event.target;
-    console.log(`New value for ${name}: ${textValue}`);
     const value = naturalValue === undefined ? textValue : naturalValue;
     this.setState(prevState => ({
       authInfo: { ...prevState.authInfo, [name]: value },
     }));
-    console.log('authInfo');
-    const { authInfo } = this.state;
-    console.log(authInfo);
   }
 
   async signIn(e) {
-    console.log('entered signIn()');
     e.preventDefault();
     this.hideModal();
     const { showError } = this.props;
     const { authInfo } = this.state;
-    console.log('current authInfo');
-    console.log(authInfo);
 
     try {
       const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
-      console.log('About to send signin post request');
       const response = await fetch(`${apiEndpoint}/signin`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: authInfo }),
       });
-      console.log('received signin post request');
       const body = await response.text();
       const result = JSON.parse(body);
-      console.log('signin: result from json.parse(body)');
-      console.log(result);
       const { signedIn, username } = result;
       const { onUserChange } = this.props;
       onUserChange({ signedIn, username });
-      console.log('signin: completed onUserChange');
     } catch (error) {
       showError(`Error authenticating: ${error.error}`);
     }
@@ -86,23 +74,14 @@ class SigninNavItem extends React.Component {
         method: 'POST',
         credentials: 'include',
       });
-      // const auth2 = window.gapi.auth2.getAuthInstance();
-      // await auth2.signOut();
       const { onUserChange } = this.props;
       onUserChange({ signedIn: false, username: '' });
     } catch (error) {
-    // const error = 'Signout is not implemented yet';
       showError(`Error signing out: ${error}`);
     }
   }
 
   showModal() {
-    // const clientId = window.ENV.GOOGLE_CLIENT_ID;
-    // const { showError } = this.props;
-    // if (!clientId) {
-    //   showError('Missing environment variable GOOGLE_CLIENT_ID');
-    //   return;
-    // }
     this.setState({ showing: true });
   }
 
