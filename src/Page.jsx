@@ -82,8 +82,10 @@ export default class Page extends React.Component {
   static async fetchData(cookie) {
     console.log('Inside Page.fetchData, with cookie:');
     console.log(cookie);
-    const query = 'query { user { id username}}';
+    const query = 'query { user { signedIn username }}';
     const data = await graphQLFetch(query, null, null, cookie);
+    console.log('Page.fetchData: data returned:');
+    console.log(data);
     return data;
   }
 
@@ -98,7 +100,8 @@ export default class Page extends React.Component {
   async componentDidMount() {
     const { user } = this.state;
     console.log(`Page.didMount, user is: ${user}`);
-    if (user == null) {
+    console.log(user);
+    if (user === null || !user.signedIn) {
       console.log('Page.didMount, inside if(user==null)');
       const data = await Page.fetchData();
       console.log(`Data returned to Page.didMount: ${data}`);

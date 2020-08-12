@@ -79,21 +79,21 @@ class SigninNavItem extends React.Component {
   }
 
   async signOut() {
-    // const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
+    const apiEndpoint = window.ENV.UI_AUTH_ENDPOINT;
     const { showError } = this.props;
-    // try {
-    //   await fetch(`${apiEndpoint}/signout`, {
-    //     method: 'POST',
-    //     credentials: 'include',
-    //   });
-    //   const auth2 = window.gapi.auth2.getAuthInstance();
-    //   await auth2.signOut();
-    //   const { onUserChange } = this.props;
-    //   onUserChange({ signedIn: false, givenName: '' });
-    // } catch (error) {
-    const error = 'Signout is not implemented yet';
-    showError(`Error signing out: ${error}`);
-    // }
+    try {
+      await fetch(`${apiEndpoint}/signout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      // const auth2 = window.gapi.auth2.getAuthInstance();
+      // await auth2.signOut();
+      const { onUserChange } = this.props;
+      onUserChange({ signedIn: false, username: '' });
+    } catch (error) {
+    // const error = 'Signout is not implemented yet';
+      showError(`Error signing out: ${error}`);
+    }
   }
 
   showModal() {
