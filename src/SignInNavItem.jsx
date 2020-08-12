@@ -48,9 +48,9 @@ class SigninNavItem extends React.Component {
       if (err.error) throw new Error(err.error);
       const body = await response.text();
       const result = JSON.parse(body);
-      const { signedIn, username } = result;
+      const { signedIn, firstName } = result;
       const { onUserChange } = this.props;
-      onUserChange({ signedIn, username });
+      onUserChange({ signedIn, firstName });
     } catch (error) {
       showError(`Authentication ${error}`);
     }
@@ -83,7 +83,7 @@ class SigninNavItem extends React.Component {
     const { user } = this.props;
     if (user.signedIn) {
       return (
-        <NavDropdown title={user.username} id="user">
+        <NavDropdown title={user.firstName} id="user">
           <MenuItem onClick={this.signOut}>Sign out</MenuItem>
         </NavDropdown>
       );

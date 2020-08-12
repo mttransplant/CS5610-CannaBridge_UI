@@ -95,6 +95,28 @@ class AccountRequest extends React.Component {
         <Panel.Body>
           <Form horizontal onSubmit={this.handleSubmit}>
             <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Username</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={TextInput}
+                  size={50}
+                  name="username"
+                  onChange={this.onChange}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Password</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={TextInput}
+                  size={50}
+                  name="password"
+                  onChange={this.onChange}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup>
               <Col componentClass={ControlLabel} sm={3}>First Name</Col>
               <Col sm={9}>
                 <FormControl
