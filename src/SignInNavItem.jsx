@@ -140,7 +140,6 @@ class SigninNavItem extends React.Component {
                       type="submit"
                     >
                       Sign In
-                      {/* <img src="https:/goo.gl/4yjp6B" alt="Sign In" /> */}
                     </Button>
                   </ButtonToolbar>
                 </Col>

@@ -48,7 +48,6 @@ class ProductList extends React.Component {
     let page = parseInt(params.get('page'), 10);
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
-    // TODO: Update Query for #Iter2
     // TODO: Modify query for #Iter2: if(producer) show only myProducts, else show all products
     const query = `query productList (
       $type: Type
@@ -77,9 +76,6 @@ class ProductList extends React.Component {
 
 
     const data = await graphQLFetch(query, vars, showError);
-    // TODO: Link up to new MongoDB for Products. Hold for #Iter2
-    // Note: Next line is just so that old issueTracker data stops appearing
-    // data = { productList: { products: [], pages: 0 } };
     return data;
   }
 
@@ -141,8 +137,7 @@ class ProductList extends React.Component {
     if (data) {
       this.setState((prevState) => {
         const newList = [...prevState.products];
-        // TODO: update to productUpdate when GraphQL is updated in #Iter2
-        newList[index] = data.issueUpdate;
+        newList[index] = data.productUpdate;
         return { products: newList };
       });
     } else {
@@ -159,7 +154,6 @@ class ProductList extends React.Component {
     const { id } = products[index];
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
-    // TODO: Update to productDelete when GraphQL is updated in #Iter2
     if (data && data.productDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.products];

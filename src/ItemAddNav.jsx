@@ -5,7 +5,6 @@ import {
   ControlLabel, FormControl, Glyphicon, Tooltip, OverlayTrigger,
 } from 'react-bootstrap';
 import graphQLFetch from './graphQLFetch.js';
-// import NumInput from './NumInput.jsx';
 import withToast from './withToast.jsx';
 
 class ItemAddNav extends React.Component {
@@ -71,16 +70,13 @@ class ItemAddNav extends React.Component {
     }
 
     const { showError } = this.props;
-    // TODO: Update issue to product in #Iter2
 
     const data = await graphQLFetch(query, { item }, showError);
     if (data) {
       const { history } = this.props;
       if (pathname === '/products') {
-      // TODO: Update issueAdd to productAdd in #Iter2
         history.push(`/edit/product/${data.productAdd.id}`);
       } else {
-        // TODO: Update issueAdd to productAdd in #Iter2
         history.push(`/edit/request/${data.requestAdd.id}`);
       }
     }
