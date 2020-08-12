@@ -13,6 +13,7 @@ class SigninNavItem extends React.Component {
     this.state = {
       showing: false,
       disabled: false,
+      authInfo: { username: '', password: '' },
     };
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
@@ -43,15 +44,15 @@ class SigninNavItem extends React.Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: authInfo }),
       });
-      console.log(response);
+      const err = await response.clone().json();
+      if (err.error) throw new Error(err.error);
       const body = await response.text();
       const result = JSON.parse(body);
       const { signedIn, username } = result;
       const { onUserChange } = this.props;
       onUserChange({ signedIn, username });
     } catch (error) {
-      showError(`Error authenticating: ${error}`);
-      console.log(error);
+      showError(`Authentication ${error}`);
     }
   }
 
