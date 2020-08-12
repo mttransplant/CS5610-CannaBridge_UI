@@ -56,13 +56,15 @@ class SigninNavItem extends React.Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: authInfo }),
       });
+      console.log(response);
       const body = await response.text();
       const result = JSON.parse(body);
       const { signedIn, username } = result;
       const { onUserChange } = this.props;
       onUserChange({ signedIn, username });
     } catch (error) {
-      showError(`Error authenticating: ${error.error}`);
+      showError(`Error authenticating: ${error}`);
+      console.log(error);
     }
   }
 
