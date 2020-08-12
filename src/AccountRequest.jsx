@@ -13,13 +13,15 @@ class AccountRequest extends React.Component {
     super();
     this.state = {
       newAccount: {
-        firstName: null,
-        lastName: null,
-        phone: null,
-        email: null,
-        businessName: null,
-        businessWebsite: null,
-        businessType: null,
+        username: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        phone: '',
+        email: '',
+        businessName: '',
+        businessWebsite: '',
+        businessType: 'Dispensary',
       },
       invalidFields: {},
       showingValidation: false,
@@ -57,14 +59,22 @@ class AccountRequest extends React.Component {
     this.showValidation();
     const { newAccount, invalidFields } = this.state;
     if (Object.keys(invalidFields).length !== 0) return;
+    console.log(newAccount);
     // TODO: update query when account database is ready
-    const query = '';
+    const query = `mutation register(
+      $newAccount: NewUserInputs!
+    ) {register(
+        newAccount: $newAccount
+      ){
+        username firstName
+      }
+    }`;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { newAccount }, showError);
     if (data) {
-      // TODO: Update data.issueUpdate to data.newAccountUpdate in #Iter2
-      this.setState({ newAccount: data.issueUpdate });
-      showSuccess('Requested new account successfully');
+      const { username, firstName } = data.register;
+      // this.setState({ newAccount: data.register });
+      showSuccess(`${firstName}, you have a new account with username "${username}"! Please sign in above.`);
     }
   }
 
