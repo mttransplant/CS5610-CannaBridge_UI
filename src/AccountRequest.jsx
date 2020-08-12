@@ -59,8 +59,6 @@ class AccountRequest extends React.Component {
     this.showValidation();
     const { newAccount, invalidFields } = this.state;
     if (Object.keys(invalidFields).length !== 0) return;
-    console.log(newAccount);
-    // TODO: update query when account database is ready
     const query = `mutation register(
       $newAccount: NewUserInputs!
     ) {register(
@@ -73,7 +71,6 @@ class AccountRequest extends React.Component {
     const data = await graphQLFetch(query, { newAccount }, showError);
     if (data) {
       const { username, firstName } = data.register;
-      // this.setState({ newAccount: data.register });
       showSuccess(`${firstName}, you have a new account with username "${username}"! Please sign in above.`);
     }
   }
