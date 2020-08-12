@@ -18,8 +18,7 @@ class ProductRowPlain extends React.Component {
     } = this.props;
     const user = this.context;
     // TODO: After authentication is updated, make edit/delete only visible to owner.
-    let disabled = !user.signedIn;
-    disabled = false;
+    const disabled = !user.signedIn;
 
     const selectLocation = { pathname: `/products/${product.id}`, search };
     const editTooltip = (<Tooltip id="edit-tooltip">Edit Product</Tooltip>);
@@ -39,7 +38,7 @@ class ProductRowPlain extends React.Component {
     const tableRow = (
       <tr>
         {/* TODO: Add Image Thumbnail */}
-        <td><Glyphicon glyph="picture" /></td>
+        {/* <td><Glyphicon glyph="picture" /></td> */}
         <td>{product.id}</td>
         <td>{product.title}</td>
         <td>{product.type}</td>
@@ -51,7 +50,7 @@ class ProductRowPlain extends React.Component {
         <td>
           <LinkContainer to={`/edit/product/${product.id}`}>
             <OverlayTrigger delayShow={1000} placement="top" overlay={editTooltip}>
-              <Button bsSize="xsmall">
+              <Button disabled={disabled} bsSize="xsmall">
                 <Glyphicon glyph="edit" />
               </Button>
             </OverlayTrigger>
@@ -105,7 +104,7 @@ export default function ProductTable({ products, closeProduct, deleteProduct }) 
       <Table bordered condensed hover responsive>
         <thead>
           <tr>
-            <th>Image</th>
+            {/* <th>Image</th> */}
             <th>ID</th>
             <th>Title</th>
             <th>Type</th>

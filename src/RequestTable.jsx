@@ -18,8 +18,7 @@ class RequestRowPlain extends React.Component {
     } = this.props;
     const user = this.context;
     // TODO: After authentication is updated, only make edit/delete visible to owner.
-    let disabled = !user.signedIn;
-    disabled = false;
+    const disabled = !user.signedIn;
 
     const selectLocation = { pathname: `/requests/${request.id}`, search };
     const editTooltip = (<Tooltip id="edit-tooltip">Edit Request</Tooltip>);
@@ -46,7 +45,7 @@ class RequestRowPlain extends React.Component {
         <td>
           <LinkContainer to={`/edit/request/${request.id}`}>
             <OverlayTrigger delayShow={1000} placement="top" overlay={editTooltip}>
-              <Button bsSize="xsmall">
+              <Button disabled={disabled} bsSize="xsmall">
                 <Glyphicon glyph="edit" />
               </Button>
             </OverlayTrigger>
