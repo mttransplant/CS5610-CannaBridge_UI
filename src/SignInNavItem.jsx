@@ -21,19 +21,6 @@ class SigninNavItem extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  // componentDidMount() {
-  //   const clientId = window.ENV.GOOGLE_CLIENT_ID;
-  //   if (!clientId) return;
-  //   window.gapi.load('auth2', () => {
-  //     if (!window.gapi.auth2.getAuthInstance()) {
-  //       window.gapi.auth2.init({ client_id: clientId })
-  //         .then(() => {
-  //           this.setState({ disabled: false });
-  //         });
-  //     }
-  //   });
-  // }
-
   onChange(event, naturalValue) {
     const { name, value: textValue } = event.target;
     const value = naturalValue === undefined ? textValue : naturalValue;
