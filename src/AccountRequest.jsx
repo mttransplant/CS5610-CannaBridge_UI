@@ -195,7 +195,7 @@ class AccountRequest extends React.Component {
                 <FormControl
                   componentClass="select"
                   name="businessType"
-                  value="Dispensary"
+                  // value="Dispensary"
                   onChange={this.onChange}
                 >
                   <option value="Dispensary">Dispensary</option>
