@@ -49,7 +49,9 @@ class ItemAddNav extends React.Component {
       // TODO: Update form to get type
       item.type = 'Flower';
       // TODO: update this to pull in current user
-      item.poster = 'Producer A';
+      // item.poster = 'Producer A';
+      const { user: { username } } = this.props;
+      item.poster = username;
 
       query = `mutation productAdd($item: ProductInputs!) {
         productAdd(product: $item) {
@@ -61,7 +63,9 @@ class ItemAddNav extends React.Component {
       // TODO: Update form to get type
       item.type = 'Flower';
       // TODO: update this to pull in current user
-      item.poster = 'Producer A';
+      // item.poster = 'Producer A';
+      const { user: { username } } = this.props;
+      item.poster = username;
       query = `mutation requestAdd($item: RequestInputs!) {
         requestAdd(request: $item) {
             id
@@ -84,14 +88,11 @@ class ItemAddNav extends React.Component {
 
   render() {
     const { showing } = this.state;
-    // const { user: { signedIn } } = this.props;
-    const signedIn = true;
-    // TODO: Uncomment next line when ready in #Iter2
-    // const { user: { accountType } } = this.props;
+    const { user: { signedIn } } = this.props;
+    const { user: { businessType } } = this.props;
     let toolTipId;
     let formTitle;
-    const { location: { pathname } } = this.props;
-    if (pathname === '/products') { // TODO: Replace signedIn with accountType when available
+    if (businessType === 'Cultivator') {
       toolTipId = 'create-product';
       formTitle = 'Create Product';
     } else {
@@ -100,7 +101,7 @@ class ItemAddNav extends React.Component {
     }
     return (
       <React.Fragment>
-        <NavItem disabled={!signedIn && pathname !== '/products' && pathname !== '/requests'} onClick={this.showModal}>
+        <NavItem disabled={!signedIn} onClick={this.showModal}>
           <OverlayTrigger
             placement="left"
             delayShow={1000}
