@@ -43,8 +43,8 @@ class ItemAddNav extends React.Component {
     const form = document.forms.itemAdd;
     const { item } = this.state;
     let query;
-    const { location: { pathname } } = this.props;
-    if (pathname === '/products') {
+    const { user: { businessType } } = this.props;
+    if (businessType === 'Cultivator') {
       item.title = form.title.value;
       // TODO: Update form to get type
       item.type = 'Flower';
@@ -58,7 +58,7 @@ class ItemAddNav extends React.Component {
             id
         }
       }`;
-    } else if (pathname === '/requests') {
+    } else if (businessType === 'Dispensary') {
       item.title = form.title.value;
       // TODO: Update form to get type
       item.type = 'Flower';
@@ -78,7 +78,7 @@ class ItemAddNav extends React.Component {
     const data = await graphQLFetch(query, { item }, showError);
     if (data) {
       const { history } = this.props;
-      if (pathname === '/products') {
+      if (businessType === 'Cultivator') {
         history.push(`/edit/product/${data.productAdd.id}`);
       } else {
         history.push(`/edit/request/${data.requestAdd.id}`);
