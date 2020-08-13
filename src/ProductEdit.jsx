@@ -15,7 +15,6 @@ import UserContext from './UserContext.js';
 
 class ProductEdit extends React.Component {
   static async fetchData(match, search, showError) {
-    // TODO: Update query with new MongoDB in #Iter2
     const query = `query product($id: Int!) {
       product(id: $id) {
         id title type poster
@@ -95,7 +94,6 @@ class ProductEdit extends React.Component {
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { changes, id }, showError);
     if (data) {
-      // TODO: UPdate data.issueUpdate to data.productUpdate in #Iter2
       this.setState({ product: data.productUpdate });
       showSuccess('Updated product successfully');
     }
@@ -249,7 +247,7 @@ class ProductEdit extends React.Component {
                 />
               </Col>
             </FormGroup>
-            <FormGroup>
+            {/* <FormGroup>
               <Col componentClass={ControlLabel} sm={3}>Image</Col>
               <Col sm={9}>
                 <input
@@ -257,7 +255,7 @@ class ProductEdit extends React.Component {
                   className="image-upload"
                 />
               </Col>
-            </FormGroup>
+            </FormGroup> */}
 
             <FormGroup>
               <Col componentClass={ControlLabel} sm={3}>Description</Col>

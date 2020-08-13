@@ -48,8 +48,6 @@ class ItemAddNav extends React.Component {
       item.title = form.title.value;
       // TODO: Update form to get type
       item.type = 'Flower';
-      // TODO: update this to pull in current user
-      // item.poster = 'Producer A';
       const { user: { username } } = this.props;
       item.poster = username;
 
@@ -62,8 +60,6 @@ class ItemAddNav extends React.Component {
       item.title = form.title.value;
       // TODO: Update form to get type
       item.type = 'Flower';
-      // TODO: update this to pull in current user
-      // item.poster = 'Producer A';
       const { user: { username } } = this.props;
       item.poster = username;
       query = `mutation requestAdd($item: RequestInputs!) {

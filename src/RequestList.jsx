@@ -33,12 +33,6 @@ class RequestList extends React.Component {
     const vars = { hasSelection: false, selectedId: 0 };
     if (params.get('type')) vars.type = params.get('type');
 
-    // TODO: Update these to look for strings
-    // const dateMin = parseInt(params.get('dateMin'), 10);
-    // if (!Number.isNaN(dateMin)) vars.dateMin = dateMin;
-    // const dateMax = parseInt(params.get('dateMax'), 10);
-    // if (!Number.isNaN(dateMax)) vars.dateMax = dateMax;
-
     const dateMin = params.get('dateMin');
     if (dateMin !== null) vars.dateMin = dateMin;
     const dateMax = params.get('dateMax');
@@ -54,7 +48,6 @@ class RequestList extends React.Component {
     let page = parseInt(params.get('page'), 10);
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
-    // TODO: Update Query for #Iter2
     // TODO: Modify query for #Iter2: if(dispensary) show only myRequesets, else show all requests
     const query = `query requestList (
       $type: Type
@@ -83,9 +76,7 @@ class RequestList extends React.Component {
 
 
     const data = await graphQLFetch(query, vars, showError);
-    // TODO: Link up to new MongoDB for Products. Hold for #Iter2
-    // Note: Next line is just so that old issueTracker data stops appearing
-    // data = { requestList: { requests: [], pages: 0 } };
+
     return data;
   }
 
@@ -147,7 +138,6 @@ class RequestList extends React.Component {
     if (data) {
       this.setState((prevState) => {
         const newList = [...prevState.requests];
-        // TODO: update to requestUpdate when GraphQL is updated in #Iter2
         newList[index] = data.requestUpdate;
         return { requests: newList };
       });
@@ -157,7 +147,6 @@ class RequestList extends React.Component {
   }
 
   async deleteRequest(index) {
-    // TODO: Update query
     const query = `mutation requestDelete($id: Int!) {
       requestDelete(id: $id)
     }`;
@@ -166,7 +155,7 @@ class RequestList extends React.Component {
     const { id } = requests[index];
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
-    // TODO: Update to requestDelete when GraphQL is updated in #Iter2
+
     if (data && data.requestDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.requests];
@@ -191,7 +180,6 @@ class RequestList extends React.Component {
   }
 
   async restoreRequest(id) {
-    // TODO: Update query in #Iter2
     const query = `mutation requestRestore($id: Int!) {
       requestRestore(id: $id)
     }`;

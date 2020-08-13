@@ -5,7 +5,6 @@ import graphQLFetch from './graphQLFetch.js';
 export default class About extends React.Component {
   static async fetchData() {
     let data = await graphQLFetch('query {about}');
-    // TODO: Remove when new MongoDB is available for #Iter2
     data = { about: 'CannaBridge API v0.9' };
     return data;
   }

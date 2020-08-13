@@ -15,7 +15,6 @@ import UserContext from './UserContext.js';
 
 class RequestEdit extends React.Component {
   static async fetchData(match, search, showError) {
-    // TODO: Update query with new MongoDB in #Iter2
     const query = `query request($id: Int!) {
       request(id: $id) {
         id title type poster
@@ -79,7 +78,6 @@ class RequestEdit extends React.Component {
     this.showValidation();
     const { request, invalidFields } = this.state;
     if (Object.keys(invalidFields).length !== 0) return;
-    // TODO: Update query in #Iter2
     const query = `mutation requestUpdate(
       $id: Int!
       $changes: RequestUpdateInputs!
@@ -96,7 +94,6 @@ class RequestEdit extends React.Component {
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { changes, id }, showError);
     if (data) {
-      // TODO: UPdate data.issueUpdate to data.requestUpdate in #Iter2
       this.setState({ request: data.requestUpdate });
       showSuccess('Updated request successfully');
     }
