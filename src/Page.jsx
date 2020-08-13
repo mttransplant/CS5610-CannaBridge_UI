@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import Search from './Search.jsx';
+// import Search from './Search.jsx';
 import UserContext from './UserContext.js';
 import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
@@ -36,9 +36,9 @@ function NavBar({ user, onUserChange }) {
         </LinkContainer> */}
       </Nav>
       <Col sm={5}>
-        <Navbar.Form>
+        {/* <Navbar.Form>
           <Search />
-        </Navbar.Form>
+        </Navbar.Form> */}
       </Col>
       <Nav pullRight>
         <ItemAddNav user={user} />
@@ -80,7 +80,7 @@ function Footer() {
 
 export default class Page extends React.Component {
   static async fetchData(cookie) {
-    const query = 'query { user { signedIn firstName }}';
+    const query = 'query { user { signedIn firstName businessType username }}';
     const data = await graphQLFetch(query, null, null, cookie);
     return data;
   }
