@@ -9,6 +9,7 @@ import ItemDetail from './ItemDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import store from './store.js';
+import UserContext from './UserContext.js';
 
 const SECTION_SIZE = 5;
 
@@ -33,6 +34,15 @@ class ProductList extends React.Component {
     const vars = { hasSelection: false, selectedId: 0 };
     if (params.get('type')) vars.type = params.get('type');
 
+
+    // console.log('ProductList.fetchData user from context');
+    // console.log(this.context);
+    // const { user } = this.state;
+    // console.log(user);
+    // const { businessType, username } = this.user;
+    // if (businessType === 'Cultivator') vars.username = username;
+
+
     const dateMin = params.get('dateMin');
     if (dateMin !== null) vars.dateMin = dateMin;
     const dateMax = params.get('dateMax');
@@ -55,12 +65,14 @@ class ProductList extends React.Component {
       $dateMax: GraphQLDate
       $hasSelection: Boolean!
       $selectedId: Int!
+      $username: String
       $page: Int
     ) {
          productList (
          type: $type
          dateMin: $dateMin
          dateMax: $dateMax
+         username: $username
          page: $page
         ) {
             products {
@@ -86,6 +98,7 @@ class ProductList extends React.Component {
       productList: { products, pages }, product: selectedProduct,
     } = initialData;
     delete store.initialData;
+
     this.state = {
       products,
       selectedProduct,
@@ -96,6 +109,21 @@ class ProductList extends React.Component {
   }
 
   componentDidMount() {
+    // {
+    //   const user = this.context;
+    //   console.log('componentDidMount.user');
+    //   console.log(user);
+    //   const { businessType } = user;
+    //   console.log(businessType);
+    //   this.setState({ businessType });
+    // }
+
+    // {
+    //   console.log('Check set state in componentDidMount');
+    //   const { businessType } = this.state;
+    //   console.log(businessType);
+    // }
+
     const { products } = this.state;
     if (products == null) this.loadData();
   }
@@ -113,6 +141,9 @@ class ProductList extends React.Component {
 
   async loadData() {
     const { location: { search }, match, showError } = this.props;
+    // const { businessType } = this.state;
+    // console.log('loadData.businessTYpe');
+    // console.log(businessType);
     const data = await ProductList.fetchData(match, search, showError);
     if (data) {
       this.setState({
@@ -241,6 +272,7 @@ class ProductList extends React.Component {
   }
 }
 
+ProductList.contextType = UserContext;
 const ProductListWithToast = withToast(ProductList);
 ProductListWithToast.fetchData = ProductList.fetchData;
 export default ProductListWithToast;
