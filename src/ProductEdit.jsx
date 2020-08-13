@@ -278,9 +278,7 @@ class ProductEdit extends React.Component {
               <Col smOffset={3} sm={6}>
                 <ButtonToolbar>
                   <Button
-                  // TODO: set this back once authentication is implemented
-                    // disabled={!user.signedIn}
-                    disabled={user.signedIn}
+                    disabled={!user.signedIn}
                     bsStyle="primary"
                     type="submit"
                   >
