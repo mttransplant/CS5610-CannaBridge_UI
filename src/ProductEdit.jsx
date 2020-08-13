@@ -18,7 +18,7 @@ class ProductEdit extends React.Component {
     const query = `query product($id: Int!) {
       product(id: $id) {
         id title type poster
-        created quantity unit price
+        created status quantity unit price
       }
     }`;
 
@@ -304,6 +304,6 @@ class ProductEdit extends React.Component {
 }
 
 ProductEdit.contextType = UserContext;
-const IssueEditWithToast = withToast(ProductEdit);
-IssueEditWithToast.fetchData = ProductEdit.fetchData;
-export default IssueEditWithToast;
+const ProductEditWithToast = withToast(ProductEdit);
+ProductEditWithToast.fetchData = ProductEdit.fetchData;
+export default ProductEditWithToast;
