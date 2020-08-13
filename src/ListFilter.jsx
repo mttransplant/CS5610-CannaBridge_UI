@@ -99,9 +99,17 @@ class ListFilter extends React.Component {
           <FormGroup>
             <ControlLabel>Date Posted between:</ControlLabel>
             <InputGroup>
-              <FormControl value={dateMin} onChange={this.onChangeDateMin} />
+              <FormControl
+                default="yyyy-mm-dd"
+                value={dateMin}
+                onChange={this.onChangeDateMin}
+              />
               <InputGroup.Addon>-</InputGroup.Addon>
-              <FormControl value={dateMax} onChange={this.onChangeDateMax} />
+              <FormControl
+                default="yyyy-mm-dd"
+                value={dateMax}
+                onChange={this.onChangeDateMax}
+              />
             </InputGroup>
           </FormGroup>
         </Col>
