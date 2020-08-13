@@ -48,9 +48,13 @@ class SigninNavItem extends React.Component {
       if (err.error) throw new Error(err.error);
       const body = await response.text();
       const result = JSON.parse(body);
-      const { signedIn, firstName } = result;
+      const {
+        signedIn, firstName, username, businessType,
+      } = result;
       const { onUserChange } = this.props;
-      onUserChange({ signedIn, firstName });
+      onUserChange({
+        signedIn, firstName, username, businessType,
+      });
     } catch (error) {
       showError(`Authentication ${error}`);
     }
